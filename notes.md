@@ -8,6 +8,19 @@ section.
 
 ## Notes
 
+### 2026-07-25 05:12 -05:00 | Phase 2
+
+This model will be used for the slime enemy, modified to remove the face.
+
+Source: [Rimuru Slime by tommdraws](https://sketchfab.com/3d-models/rimuru-slime-612ff2c805114744b66d3c29c7942371)
+(45.4k triangles, 21.8k vertices)
+
+License: Creative Commons. The exact variant still needs to be recorded here.
+Most CC variants require crediting the author, so the credit line belongs in the
+game and the README once the variant is confirmed.
+
+![Rimuru Slime model on Sketchfab](screenshots/slime-model.png)
+
 ### 2026-07-25 05:08 -05:00 | Phase 2
 
 Phase 2 has started. Step-by-step instructions are in `phase2.md`. The two
