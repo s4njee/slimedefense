@@ -46,3 +46,6 @@ sysinfo.txt
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Unity editor upgrade reports
+UpgradeLog.htm
