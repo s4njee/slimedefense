@@ -8,6 +8,19 @@ section.
 
 ## Notes
 
+### 2026-07-25 05:15 -05:00 | Phase 2
+
+Alternate slime model under consideration. This one has no face to remove, and
+it contains two slimes at different sizes, which could cover two enemy types in
+Phase 8.
+
+Source: [Slimes by MartinDL](https://sketchfab.com/3d-models/slimes-61de4624789d468b864d826ec02b636c)
+(63.5k triangles, 31.8k vertices, published 2022-11-16)
+
+License: CC Attribution (CC BY), the same terms as the other candidate.
+
+![Slimes model on Sketchfab](screenshots/slime-model-alt.jpg)
+
 ### 2026-07-25 05:12 -05:00 | Phase 2
 
 This model will be used for the slime enemy, modified to remove the face.
