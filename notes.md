@@ -8,6 +8,17 @@ section.
 
 ## Notes
 
+### 2026-07-25 06:58 -05:00 | Phase 2
+
+Phase 2 is complete. One slime walks the full route from `SpawnPoint` to
+`GoalPoint` and despawns on arrival, with `Speed`, `Health`, and
+`Arrive Distance` editable on the prefab at `Assets/Prefabs/Slime.prefab`.
+
+Every item on the Phase 2 completion checklist in `phase2.md` is satisfied. No
+spawner, tower, or damage code exists yet — those are Phases 3 through 5.
+
+![Slime walking the waypoint route in Play mode](screenshots/phase2_2.webp)
+
 ### 2026-07-25 06:29 -05:00 | Phase 2
 
 `WaypointRoute` is attached to `Path` and the route gizmos are visible along the
