@@ -48,14 +48,22 @@ Hierarchy order as route order.
 2. In the Inspector, select **Add Component**.
 3. Search for `WaypointRoute` and add it.
 
-Nothing to configure — the component has no fields. It derives the route from
-the children directly, so adding, removing, or reordering waypoints in the
-Hierarchy changes the route with no code edits.
+The route itself needs no configuration — the component derives it from the
+children, so adding, removing, or reordering waypoints in the Hierarchy changes
+the route with no code edits.
 
-The component also draws the route in the Scene view: cyan spheres at each
-waypoint, connected by lines. Use this to confirm the order runs spawn → goal
-and not in some scrambled sequence. If the line zig-zags backwards, drag the
-waypoints into the correct order under `Path`.
+The component draws the route in the Scene view: a green sphere at the spawn, a
+red sphere at the goal, cyan spheres between them, and yellow lines connecting
+them in order. Use this to confirm the route runs spawn → goal and not in some
+scrambled sequence. If the line zig-zags backwards, drag the waypoints into the
+correct order under `Path`.
+
+**Set `Gizmo Radius` to match your terrain.** Gizmo sizes are in world units, so
+a radius that reads well on a 60-unit terrain is invisible on a 1000-unit one.
+The default of `8` suits a large terrain; drop it to around `0.5` on a small one.
+If the markers do not appear at all, this value is the first thing to check —
+followed by the **Gizmos** toggle in the Scene view toolbar, which hides every
+gizmo when it is off.
 
 ## 3. Create the Slime Prefab
 

@@ -7,6 +7,10 @@ using UnityEngine;
 /// </summary>
 public class WaypointRoute : MonoBehaviour
 {
+    [Tooltip("Radius of the Scene view route markers. Scale this to the terrain: " +
+             "large terrains need a bigger value or the markers become sub-pixel.")]
+    [SerializeField] float gizmoRadius = 8f;
+
     /// <summary>Number of points in the route, including spawn and goal.</summary>
     public int Count => transform.childCount;
 
@@ -17,17 +21,33 @@ public class WaypointRoute : MonoBehaviour
     public bool IsGoal(int index) => index >= transform.childCount - 1;
 
     // Draws the route in the Scene view so the waypoint order is easy to verify.
+    // Spawn is green, the goal is red, and the points between them are cyan.
     void OnDrawGizmos()
     {
-        Gizmos.color = Color.cyan;
+        int last = transform.childCount - 1;
 
-        for (int i = 0; i < transform.childCount; i++)
+        for (int i = 0; i <= last; i++)
         {
             Vector3 point = transform.GetChild(i).position;
-            Gizmos.DrawSphere(point, 0.3f);
+
+            if (i == 0)
+            {
+                Gizmos.color = Color.green;
+            }
+            else if (i == last)
+            {
+                Gizmos.color = Color.red;
+            }
+            else
+            {
+                Gizmos.color = Color.cyan;
+            }
+
+            Gizmos.DrawSphere(point, gizmoRadius);
 
             if (i > 0)
             {
+                Gizmos.color = Color.yellow;
                 Gizmos.DrawLine(transform.GetChild(i - 1).position, point);
             }
         }
