@@ -20,10 +20,6 @@ public class WaypointRoute : MonoBehaviour
     /// <summary>True when <paramref name="index"/> is the goal point.</summary>
     public bool IsGoal(int index) => index >= transform.childCount - 1;
 
-    // Temporary diagnostic. Logs once per recompile to prove whether Unity is
-    // calling OnDrawGizmos at all. Remove once the route markers are visible.
-    bool hasLoggedGizmoCall;
-
     /// <summary>
     /// Reports what the gizmo drawing code sees. Right-click the WaypointRoute
     /// header in the Inspector and pick "Log Route Info" to run it on demand.
@@ -48,13 +44,6 @@ public class WaypointRoute : MonoBehaviour
     // Spawn is green, the goal is red, and the points between them are cyan.
     void OnDrawGizmos()
     {
-        if (!hasLoggedGizmoCall)
-        {
-            hasLoggedGizmoCall = true;
-            Debug.Log("WaypointRoute.OnDrawGizmos IS being called.", this);
-            LogRouteInfo();
-        }
-
         int last = transform.childCount - 1;
 
         for (int i = 0; i <= last; i++)

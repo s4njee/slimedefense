@@ -8,6 +8,14 @@ section.
 
 ## Notes
 
+### 2026-07-25 06:29 -05:00 | Phase 2
+
+`WaypointRoute` is attached to `Path` and the route gizmos are visible along the
+path. Spawn is green, the goal is red, the points between are cyan, and yellow
+lines connect them in order.
+
+![Waypoint route gizmos in the Scene view](screenshots/phase2_1.png)
+
 ### 2026-07-25 05:15 -05:00 | Phase 2
 
 Alternate slime model under consideration. This one has no face to remove, and
