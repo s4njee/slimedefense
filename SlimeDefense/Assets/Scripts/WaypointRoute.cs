@@ -20,10 +20,41 @@ public class WaypointRoute : MonoBehaviour
     /// <summary>True when <paramref name="index"/> is the goal point.</summary>
     public bool IsGoal(int index) => index >= transform.childCount - 1;
 
+    // Temporary diagnostic. Logs once per recompile to prove whether Unity is
+    // calling OnDrawGizmos at all. Remove once the route markers are visible.
+    bool hasLoggedGizmoCall;
+
+    /// <summary>
+    /// Reports what the gizmo drawing code sees. Right-click the WaypointRoute
+    /// header in the Inspector and pick "Log Route Info" to run it on demand.
+    /// </summary>
+    [ContextMenu("Log Route Info")]
+    void LogRouteInfo()
+    {
+        if (transform.childCount == 0)
+        {
+            Debug.LogWarning($"{name}: WaypointRoute has NO child objects, so there is nothing to draw. " +
+                             "The waypoints must be children of this object.", this);
+            return;
+        }
+
+        Debug.Log($"{name}: {transform.childCount} points, gizmoRadius={gizmoRadius}, " +
+                  $"first={transform.GetChild(0).position}, " +
+                  $"last={transform.GetChild(transform.childCount - 1).position}, " +
+                  $"activeInHierarchy={gameObject.activeInHierarchy}, enabled={enabled}", this);
+    }
+
     // Draws the route in the Scene view so the waypoint order is easy to verify.
     // Spawn is green, the goal is red, and the points between them are cyan.
     void OnDrawGizmos()
     {
+        if (!hasLoggedGizmoCall)
+        {
+            hasLoggedGizmoCall = true;
+            Debug.Log("WaypointRoute.OnDrawGizmos IS being called.", this);
+            LogRouteInfo();
+        }
+
         int last = transform.childCount - 1;
 
         for (int i = 0; i <= last; i++)
