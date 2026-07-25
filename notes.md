@@ -15,9 +15,10 @@ This model will be used for the slime enemy, modified to remove the face.
 Source: [Rimuru Slime by tommdraws](https://sketchfab.com/3d-models/rimuru-slime-612ff2c805114744b66d3c29c7942371)
 (45.4k triangles, 21.8k vertices)
 
-License: Creative Commons. The exact variant still needs to be recorded here.
-Most CC variants require crediting the author, so the credit line belongs in the
-game and the README once the variant is confirmed.
+License: CC Attribution (CC BY). Modification is allowed, so removing the face
+is fine. Credit is required, and the modification has to be disclosed. The
+attribution text is in `CREDITS.md` and needs to reach an in-game credits screen
+in Phase 7.
 
 ![Rimuru Slime model on Sketchfab](screenshots/slime-model.png)
 
