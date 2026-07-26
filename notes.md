@@ -8,6 +8,25 @@ section.
 
 ## Notes
 
+### 2026-07-26 10:09 -05:00 | Phase 4
+
+Phase 4 is complete. Clicking a build node beside the path places a tower on it,
+the node highlights on hover and locks once occupied, and waves keep running
+underneath the whole time.
+
+Every item on the Phase 4 completion checklist in `phase4.md` is satisfied. The
+placement ray filters on the `BuildNode` layer, so there is no rule forbidding
+towers on the path — there is simply no node there to hit.
+
+The tower is a Meshy AI generated model imported as `.fbx`, with its textures
+extracted from the FBX's embedded data into `Assets/TowerTextures`. Its license
+terms still need to be confirmed and recorded in `CREDITS.md`.
+
+No targeting, shooting, damage, or currency code exists yet — those are Phases 5
+and 6.
+
+![Placing towers on build nodes in Play mode](screenshots/phase4.webp)
+
 ### 2026-07-25 19:23 -05:00 | Phase 3
 
 Phase 3 has started. `WaveSpawner` is attached to the scene with its `Route`

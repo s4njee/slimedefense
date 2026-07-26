@@ -16,7 +16,7 @@ public class Slime : MonoBehaviour
     [Tooltip("Extra yaw applied after aiming down the path, in degrees. Unity's LookRotation " +
              "points a transform's +Z at the target, but the imported slime model faces -Z, " +
              "so it needs 180 here to walk face-first instead of backwards.")]
-    [SerializeField] float modelYawOffset = 180f;
+    [SerializeField] float modelYawOffset = -180f;
 
     WaypointRoute route;
     int targetIndex;
@@ -68,7 +68,7 @@ public class Slime : MonoBehaviour
             // its own up axis after it has been aimed, rather than tilting the
             // aim itself. Whatever the prefab was rotated to in the Scene view is
             // discarded here — the path decides the facing every frame.
-            transform.rotation = Quaternion.LookRotation(toTarget) * Quaternion.Euler(0f, modelYawOffset, 0f);
+            transform.rotation = Quaternion.LookRotation(toTarget) * Quaternion.Euler(-90f,0f, 90f);
         }
 
         if (Vector3.Distance(transform.position, target) > arriveDistance)
