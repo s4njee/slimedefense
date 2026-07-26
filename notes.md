@@ -8,6 +8,13 @@ section.
 
 ## Notes
 
+### 2026-07-25 19:23 -05:00 | Phase 3
+
+Phase 3 has started. `WaveSpawner` is attached to the scene with its `Route`
+pointing at `Path` and three `Wave Definition` elements assigned.
+
+![WaveSpawner configured in the Unity Inspector](screenshots/phase3.webp)
+
 ### 2026-07-25 06:58 -05:00 | Phase 2
 
 Phase 2 is complete. One slime walks the full route from `SpawnPoint` to
