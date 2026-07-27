@@ -74,7 +74,7 @@ public class Projectile : MonoBehaviour
         // Read every frame rather than captured at launch, so the shot homes.
         // Ballistic shots that can miss a moving target are a Phase 9 decision
         // about feel, not something to inherit by accident here.
-        Vector3 destination = target.transform.position;
+        Vector3 destination = target.AimPosition;
 
         transform.position = Vector3.MoveTowards(transform.position, destination, speed * Time.deltaTime);
 

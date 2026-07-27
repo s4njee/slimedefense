@@ -1,0 +1,1788 @@
+fileFormatVersion: 2
+guid: c559ab34f0f4ff2468dc357dd4754755
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: slimesprite-transparent_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1435
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 71e1bac4b51234d4389ba151fc3fca8a
+      internalID: 906544472
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_1
+      rect:
+        serializedVersion: 2
+        x: 236
+        y: 1435
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 638577d2ea0fc90458d0f13de55e45e5
+      internalID: -1356287857
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_2
+      rect:
+        serializedVersion: 2
+        x: 472
+        y: 1435
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b381a53d1e0968f47bf20f9342908c9b
+      internalID: 1839767641
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_3
+      rect:
+        serializedVersion: 2
+        x: 708
+        y: 1435
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bdc3ccae86396f34ca858bac195b8057
+      internalID: 1500617834
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_4
+      rect:
+        serializedVersion: 2
+        x: 944
+        y: 1435
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b869cd1ce0acbb545a616cc63921247b
+      internalID: 1594531611
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_5
+      rect:
+        serializedVersion: 2
+        x: 1180
+        y: 1435
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e758bd1b7fe9f52438b57df6e2b6fe00
+      internalID: -1744335384
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_6
+      rect:
+        serializedVersion: 2
+        x: 1416
+        y: 1435
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a22f3979754a8fd4a8ce38f4b3026dff
+      internalID: -836810492
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_7
+      rect:
+        serializedVersion: 2
+        x: 1652
+        y: 1435
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3715638fc2f3f124c8bc716c0843e357
+      internalID: -733739881
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_8
+      rect:
+        serializedVersion: 2
+        x: 1888
+        y: 1435
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6ac646698d0173a46a44748ef1e75c00
+      internalID: 1606670503
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_9
+      rect:
+        serializedVersion: 2
+        x: 2124
+        y: 1435
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d0d406cb08385ce4fabf169f4115857a
+      internalID: -43148698
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_10
+      rect:
+        serializedVersion: 2
+        x: 2360
+        y: 1435
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f5d2021f376422d46b41f2a447b1525b
+      internalID: -601598358
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_11
+      rect:
+        serializedVersion: 2
+        x: 2596
+        y: 1435
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3027952c91c783441a52a62d7a793f46
+      internalID: 957811836
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1148
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 14c704710cabcb046acd0a44abf9c28d
+      internalID: 232652921
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_13
+      rect:
+        serializedVersion: 2
+        x: 236
+        y: 1148
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e12babb3b85965d4ca17241844e9732b
+      internalID: 1941738501
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_14
+      rect:
+        serializedVersion: 2
+        x: 472
+        y: 1148
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e6f286bb31556ff44aea7f17ff1649ea
+      internalID: 393202398
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_15
+      rect:
+        serializedVersion: 2
+        x: 708
+        y: 1148
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4f8cac10eca1a8042a9cd20572c8a2d7
+      internalID: 2127172135
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_16
+      rect:
+        serializedVersion: 2
+        x: 944
+        y: 1148
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 701f6a5950e764a40a07b33c22630f8c
+      internalID: 328924044
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_17
+      rect:
+        serializedVersion: 2
+        x: 1180
+        y: 1148
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ca1dc1c5a4267ec4db6c37746dec4485
+      internalID: 1313294513
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_18
+      rect:
+        serializedVersion: 2
+        x: 1416
+        y: 1148
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 67ca7026cb4975441870c7e71006461b
+      internalID: 1245751966
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_19
+      rect:
+        serializedVersion: 2
+        x: 1652
+        y: 1148
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 88837f50a038af442baa30272262d81d
+      internalID: 1598496010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_20
+      rect:
+        serializedVersion: 2
+        x: 1888
+        y: 1148
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 13ea25e9206d8ad43bcdd7b3f2b8f991
+      internalID: -1994170129
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_21
+      rect:
+        serializedVersion: 2
+        x: 2124
+        y: 1148
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 398d6811f58505e4f80a837b8bd8f02c
+      internalID: 2047808611
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_22
+      rect:
+        serializedVersion: 2
+        x: 2360
+        y: 1148
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3d4d0ec16dd16b4459f9089f1689e34c
+      internalID: 2056799097
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_23
+      rect:
+        serializedVersion: 2
+        x: 2596
+        y: 1148
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c4a7032a420dca44c9e0e31a6fb7999f
+      internalID: 1605745858
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_24
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 861
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c3c1570dd666d504997b490b3d2b6b8e
+      internalID: -2028682569
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_25
+      rect:
+        serializedVersion: 2
+        x: 236
+        y: 861
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c4f1c30bd3298be41a46806ff829d078
+      internalID: 193406291
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_26
+      rect:
+        serializedVersion: 2
+        x: 472
+        y: 861
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b08f8ba76ee160446b7b61353ffdc6aa
+      internalID: -967747340
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_27
+      rect:
+        serializedVersion: 2
+        x: 708
+        y: 861
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5717f471d1c4d2a4889d7fd0f276a252
+      internalID: 2078644555
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_28
+      rect:
+        serializedVersion: 2
+        x: 944
+        y: 861
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 28a450e38e8e8b34c9dd57c31636da6d
+      internalID: -1551956929
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_29
+      rect:
+        serializedVersion: 2
+        x: 1180
+        y: 861
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cdd0b28381c65b846a9817d163308f38
+      internalID: -1327130324
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_30
+      rect:
+        serializedVersion: 2
+        x: 1416
+        y: 861
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7cdb14165bae12b45ac4c39f60d6496c
+      internalID: 1818248145
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_31
+      rect:
+        serializedVersion: 2
+        x: 1652
+        y: 861
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 377963659ac4cbc4d90124fd00420630
+      internalID: 309041343
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_32
+      rect:
+        serializedVersion: 2
+        x: 1888
+        y: 861
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a4159db594a482a49baa10f9ee57d42c
+      internalID: 249391184
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_33
+      rect:
+        serializedVersion: 2
+        x: 2124
+        y: 861
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 48f3c01d9c6ad9d4fb0c77d7153f67ea
+      internalID: -884629633
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_34
+      rect:
+        serializedVersion: 2
+        x: 2360
+        y: 861
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 411887306a7d19c47ac307f2f08e40d9
+      internalID: -291133066
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_35
+      rect:
+        serializedVersion: 2
+        x: 2596
+        y: 861
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1dbdb55c5c7b881439bf17356eb1941e
+      internalID: -9215735
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_36
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 574
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ea2ebf263c871b940a796c4a5fef15ff
+      internalID: -589332216
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_37
+      rect:
+        serializedVersion: 2
+        x: 236
+        y: 574
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3788b4e051d6fe541bfd844d5699f255
+      internalID: -360654070
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_38
+      rect:
+        serializedVersion: 2
+        x: 472
+        y: 574
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 00120dc124b9913489a18731a8c207fa
+      internalID: 689700432
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_39
+      rect:
+        serializedVersion: 2
+        x: 708
+        y: 574
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f1ac231e20b98c64ba7d5cdd39074306
+      internalID: -2080135699
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_40
+      rect:
+        serializedVersion: 2
+        x: 944
+        y: 574
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4dea1ed01a6416342834e80ceba91bef
+      internalID: 1947384825
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_41
+      rect:
+        serializedVersion: 2
+        x: 1180
+        y: 574
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 85b7db9030567304fae08507c29bf408
+      internalID: 729329660
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_42
+      rect:
+        serializedVersion: 2
+        x: 1416
+        y: 574
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 42d08e4abbf33e4408d01077dae65952
+      internalID: -1945753494
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_43
+      rect:
+        serializedVersion: 2
+        x: 1652
+        y: 574
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6704c3a83dd1aff4ca230f0ce2dd04ad
+      internalID: 691648399
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_44
+      rect:
+        serializedVersion: 2
+        x: 1888
+        y: 574
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7db2265908d8a324aa67e597e2ad1708
+      internalID: 1927143087
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_45
+      rect:
+        serializedVersion: 2
+        x: 2124
+        y: 574
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fd5522e4b384e524aa29730bffdcc87d
+      internalID: -1359305979
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_46
+      rect:
+        serializedVersion: 2
+        x: 2360
+        y: 574
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aaf4d2ff1c89e5744892962d561c8397
+      internalID: 1322936258
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_47
+      rect:
+        serializedVersion: 2
+        x: 2596
+        y: 574
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1af799f8136e95c4490f99ff120827e4
+      internalID: -823959239
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_48
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 287
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 58f477d3dad9fb045b6d90996b2d3bab
+      internalID: -2090051965
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_49
+      rect:
+        serializedVersion: 2
+        x: 236
+        y: 287
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 97b9e4dea7206b44a80723813dda9d67
+      internalID: -1731994922
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_50
+      rect:
+        serializedVersion: 2
+        x: 472
+        y: 287
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 55c4cb8e3f746594abe17114bb37bbf1
+      internalID: 1638775227
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_51
+      rect:
+        serializedVersion: 2
+        x: 708
+        y: 287
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f892492e7ff49114eb85bcea3e2af85f
+      internalID: 1487996849
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_52
+      rect:
+        serializedVersion: 2
+        x: 944
+        y: 287
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 420276751e2759447894de8cb7a084de
+      internalID: -819050939
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_53
+      rect:
+        serializedVersion: 2
+        x: 1180
+        y: 287
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ba4a794c660defc4ca5d3cda2b775924
+      internalID: 1517848567
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_54
+      rect:
+        serializedVersion: 2
+        x: 1416
+        y: 287
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d63d88bd9d7c29745908e13e53ce812d
+      internalID: 1075727604
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_55
+      rect:
+        serializedVersion: 2
+        x: 1652
+        y: 287
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e1ab6fd82570b314dbba67ae60a527a2
+      internalID: -215098973
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_56
+      rect:
+        serializedVersion: 2
+        x: 1888
+        y: 287
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 45100c527fc404044995b87ebc161419
+      internalID: -717912980
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_57
+      rect:
+        serializedVersion: 2
+        x: 2124
+        y: 287
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 342dd6aae0498cf4bb7436ab0b52521e
+      internalID: 947969958
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_58
+      rect:
+        serializedVersion: 2
+        x: 2360
+        y: 287
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 923ca415ea9adb64c9f874ea12b436cf
+      internalID: 265680422
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_59
+      rect:
+        serializedVersion: 2
+        x: 2596
+        y: 287
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 65c545133ba89db45900977f97d2071a
+      internalID: -1650004971
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_60
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b874a464b02d6b2448923a5fd3b099d4
+      internalID: 447430733
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_61
+      rect:
+        serializedVersion: 2
+        x: 236
+        y: 0
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 81f419450e8a164419a53dce0ef37c69
+      internalID: 1969002805
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_62
+      rect:
+        serializedVersion: 2
+        x: 472
+        y: 0
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ca2f12f7d085a8643b3a2be4acd2967b
+      internalID: 534791612
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_63
+      rect:
+        serializedVersion: 2
+        x: 708
+        y: 0
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 82f98872e5a05f9488cab4a16d602128
+      internalID: -1284623096
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_64
+      rect:
+        serializedVersion: 2
+        x: 944
+        y: 0
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d4e00a1979d91b549b67b264a4800f84
+      internalID: -933896679
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_65
+      rect:
+        serializedVersion: 2
+        x: 1180
+        y: 0
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9414167b5aea3fd4d9d08517cee2077a
+      internalID: -1233725179
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_66
+      rect:
+        serializedVersion: 2
+        x: 1416
+        y: 0
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 94ed1cab53158964b9b711cf5af19083
+      internalID: -1504813318
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_67
+      rect:
+        serializedVersion: 2
+        x: 1652
+        y: 0
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 34995cc551b0bca4eb316029c7ec2b85
+      internalID: 640428312
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_68
+      rect:
+        serializedVersion: 2
+        x: 1888
+        y: 0
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c6f97d70b23d2464682481ae7de93714
+      internalID: -432443170
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_69
+      rect:
+        serializedVersion: 2
+        x: 2124
+        y: 0
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 78ca5f0a255f7ad4ca12ba07fb25ca98
+      internalID: 1266478266
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_70
+      rect:
+        serializedVersion: 2
+        x: 2360
+        y: 0
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a55693d8edaad7e469775d4ede3fc8d0
+      internalID: 786687279
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-transparent_71
+      rect:
+        serializedVersion: 2
+        x: 2596
+        y: 0
+        width: 236
+        height: 287
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a818bbf0745d70843af62c4d637dfe12
+      internalID: -425435636
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 54082b8f85f73154385956850994c28e
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":12.0,"y":6.0},"gridSpriteSize":{"x":236.0,"y":287.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      slimesprite-transparent_0: 906544472
+      slimesprite-transparent_1: -1356287857
+      slimesprite-transparent_10: -601598358
+      slimesprite-transparent_11: 957811836
+      slimesprite-transparent_12: 232652921
+      slimesprite-transparent_13: 1941738501
+      slimesprite-transparent_14: 393202398
+      slimesprite-transparent_15: 2127172135
+      slimesprite-transparent_16: 328924044
+      slimesprite-transparent_17: 1313294513
+      slimesprite-transparent_18: 1245751966
+      slimesprite-transparent_19: 1598496010
+      slimesprite-transparent_2: 1839767641
+      slimesprite-transparent_20: -1994170129
+      slimesprite-transparent_21: 2047808611
+      slimesprite-transparent_22: 2056799097
+      slimesprite-transparent_23: 1605745858
+      slimesprite-transparent_24: -2028682569
+      slimesprite-transparent_25: 193406291
+      slimesprite-transparent_26: -967747340
+      slimesprite-transparent_27: 2078644555
+      slimesprite-transparent_28: -1551956929
+      slimesprite-transparent_29: -1327130324
+      slimesprite-transparent_3: 1500617834
+      slimesprite-transparent_30: 1818248145
+      slimesprite-transparent_31: 309041343
+      slimesprite-transparent_32: 249391184
+      slimesprite-transparent_33: -884629633
+      slimesprite-transparent_34: -291133066
+      slimesprite-transparent_35: -9215735
+      slimesprite-transparent_36: -589332216
+      slimesprite-transparent_37: -360654070
+      slimesprite-transparent_38: 689700432
+      slimesprite-transparent_39: -2080135699
+      slimesprite-transparent_4: 1594531611
+      slimesprite-transparent_40: 1947384825
+      slimesprite-transparent_41: 729329660
+      slimesprite-transparent_42: -1945753494
+      slimesprite-transparent_43: 691648399
+      slimesprite-transparent_44: 1927143087
+      slimesprite-transparent_45: -1359305979
+      slimesprite-transparent_46: 1322936258
+      slimesprite-transparent_47: -823959239
+      slimesprite-transparent_48: -2090051965
+      slimesprite-transparent_49: -1731994922
+      slimesprite-transparent_5: -1744335384
+      slimesprite-transparent_50: 1638775227
+      slimesprite-transparent_51: 1487996849
+      slimesprite-transparent_52: -819050939
+      slimesprite-transparent_53: 1517848567
+      slimesprite-transparent_54: 1075727604
+      slimesprite-transparent_55: -215098973
+      slimesprite-transparent_56: -717912980
+      slimesprite-transparent_57: 947969958
+      slimesprite-transparent_58: 265680422
+      slimesprite-transparent_59: -1650004971
+      slimesprite-transparent_6: -836810492
+      slimesprite-transparent_60: 447430733
+      slimesprite-transparent_61: 1969002805
+      slimesprite-transparent_62: 534791612
+      slimesprite-transparent_63: -1284623096
+      slimesprite-transparent_64: -933896679
+      slimesprite-transparent_65: -1233725179
+      slimesprite-transparent_66: -1504813318
+      slimesprite-transparent_67: 640428312
+      slimesprite-transparent_68: -432443170
+      slimesprite-transparent_69: 1266478266
+      slimesprite-transparent_7: -733739881
+      slimesprite-transparent_70: 786687279
+      slimesprite-transparent_71: -425435636
+      slimesprite-transparent_8: 1606670503
+      slimesprite-transparent_9: -43148698
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

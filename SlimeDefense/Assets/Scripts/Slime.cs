@@ -33,6 +33,7 @@ public class Slime : MonoBehaviour
 
     WaypointRoute route;
     int targetIndex;
+    SpriteRenderer aimRenderer;
 
     // True once this slime has been counted onto the board, so it is counted off
     // exactly once no matter which way it leaves.
@@ -43,6 +44,16 @@ public class Slime : MonoBehaviour
     // towers, one slime, a routine occurrence — could pay the reward twice and
     // decrement the live count twice.
     bool despawning;
+
+    /// <summary>
+    /// World-space point projectiles should home toward. The slime's root stays
+    /// on the path at ground level, while its animated sprite can stretch and
+    /// jump above it. Renderer bounds follow the currently displayed frame, so
+    /// their center keeps shots visually attached to the airborne slime.
+    /// </summary>
+    public Vector3 AimPosition => aimRenderer != null && aimRenderer.enabled
+        ? aimRenderer.bounds.center
+        : transform.position;
 
     /// <summary>
     /// How far along the route this slime is, as its waypoint index minus a
@@ -82,6 +93,34 @@ public class Slime : MonoBehaviour
         if (route != null && route.Count > 0)
         {
             transform.position = route.GetPoint(0);
+        }
+    }
+
+    void Awake()
+    {
+        // Prefer the SpriteRenderer that owns the sprite Animator. This avoids
+        // accidentally selecting an unused sprite child left in the prefab.
+        SpriteRenderer[] renderers = GetComponentsInChildren<SpriteRenderer>();
+
+        foreach (SpriteRenderer candidate in renderers)
+        {
+            if (candidate.enabled && candidate.GetComponent<Animator>() != null)
+            {
+                aimRenderer = candidate;
+                break;
+            }
+        }
+
+        if (aimRenderer == null)
+        {
+            foreach (SpriteRenderer candidate in renderers)
+            {
+                if (candidate.enabled)
+                {
+                    aimRenderer = candidate;
+                    break;
+                }
+            }
         }
     }
 

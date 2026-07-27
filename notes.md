@@ -8,6 +8,41 @@ section.
 
 ## Notes
 
+### 2026-07-27 11:35 -05:00 | Phase 7
+
+Custom sprites are enabled. The slime is now a billboarded animated sprite rather
+than the imported 3D mesh, with a jump cycle playing as it walks the route.
+
+New assets: `Assets/Sprites/slimesprite-transparent.png`, the `slimejump` clip and
+its controller under `Assets/Animation`, and `Scripts/SpriteBillboard.cs`, which
+copies the camera's rotation in `LateUpdate`. Running in `LateUpdate` is what
+keeps it compatible with the Phase 2 facing fix: `Slime.Update` still aims the
+root down the path, and the billboard turns only the sprite child afterwards, so
+the path decides where the slime is going and the camera decides which way the
+picture faces.
+
+Projectiles now home on `Slime.AimPosition` instead of `transform.position`.
+The root stays on the ground along the path while the sprite stretches and leaves
+it during the jump, so aiming at the root meant shots arriving underneath an
+airborne slime. `AimPosition` returns the sprite renderer's bounds center, which
+follows whatever frame is currently displayed.
+
+The Meshy Blue Pebble mesh is no longer referenced by the prefab. `CREDITS.md`
+still lists it and the Sketchfab candidates, and needs revisiting to say what is
+actually in the game.
+
+Two things this changed by accident, both worth handling before Phase 8
+duplicates the prefab into enemy variants:
+
+- The oversized detection sphere left over from Phase 5 went away with the mesh
+  child it was attached to. The live collider is now `1.435` on `SpriteVisual`,
+  which the root's scale of `3` makes about `4.3` units in world space — sane
+  compared to the old one, still large next to a tower `Range` of `6`.
+- That collider is **not** a trigger. Phase 5 required one so slimes could be
+  found by queries without taking part in collision resolution.
+
+![Animated sprite slimes walking the route](screenshots/phase7-2.webp)
+
 ### 2026-07-27 10:35 -05:00 | Phase 7
 
 Phase 7 is complete. Money, lives, and the wave counter are on screen, the run
