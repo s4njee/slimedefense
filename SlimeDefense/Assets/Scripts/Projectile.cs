@@ -33,20 +33,23 @@ public class Projectile : MonoBehaviour
     [SerializeField] float arriveDistance = 0.2f;
 
     Slime target;
-    float damage;
+    Tower source;
 
     /// <summary>
     /// Aims this projectile. Called by <see cref="Tower"/> immediately after
     /// instantiating it, before the first Update runs.
     ///
-    /// Damage is passed in rather than stored on the prefab so a single
-    /// projectile prefab can serve every tower Phase 8 adds — the tower owns how
-    /// hard it hits, the projectile only owns how it travels.
+    /// The firing tower is remembered rather than a damage number, because Phase
+    /// 8 made what-happens-on-arrival a per-tower decision: a splash tower hits
+    /// everything near the impact and a frost tower slows instead of hurting.
+    /// Handing the arrival back to the tower keeps every tower type's behavior
+    /// in the tower type, and leaves exactly one projectile class that knows how
+    /// to travel and nothing else.
     /// </summary>
-    public void Launch(Slime newTarget, float newDamage)
+    public void Launch(Slime newTarget, Tower newSource)
     {
         target = newTarget;
-        damage = newDamage;
+        source = newSource;
     }
 
     void Start()
@@ -83,7 +86,15 @@ public class Projectile : MonoBehaviour
             return;
         }
 
-        target.TakeDamage(damage);
+        // The firing tower can be gone too — Phase 8's sell action destroys a
+        // tower whose shots are still in the air. Same fake-null rule as the
+        // target above: the reference looks fine and every member access throws.
+        // A shot from a sold tower simply fizzles.
+        if (source != null)
+        {
+            source.OnProjectileHit(target, transform.position);
+        }
+
         Destroy(gameObject);
     }
 }

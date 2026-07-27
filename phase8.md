@@ -61,14 +61,33 @@ makes it the worst possible place to be when you want to see progress.
 
 ## A1. Add the Scripts
 
-- `TowerDefinition.cs` — **new.** A ScriptableObject holding one tower's stats.
-- `Tower.cs` — **edited.** Reads its stats from a definition; `Fire` becomes
-  `virtual`.
-- `SplashTower.cs` — **new.** Overrides `Fire` to damage everything near the hit.
-- `FrostTower.cs` — **new.** Overrides `Fire` to slow instead of hurt.
-- `Slime.cs` — **edited.** Gains `ApplySlow`.
-- `TowerPlacer.cs` — **edited.** Builds the *selected* tower rather than the only
-  one.
+- `TowerDefinition.cs` — **new.** A ScriptableObject holding one tower's stats,
+  plus the `TargetingMode` enum that makes Phase 5's targeting rule a per-tower
+  choice at last.
+- `Tower.cs` — **edited.** Reads its stats from a definition, scores targets by
+  the selected rule, and gains a `virtual OnProjectileHit`.
+- `SplashTower.cs` — **new.** Overrides the hit to damage everything near it.
+- `FrostTower.cs` — **new.** Overrides the hit to slow instead of hurt.
+- `TowerPicker.cs` — **new.** The selection panel.
+- `Slime.cs` — **edited.** Gains `ApplySlow` and a public `Health`.
+- `TowerPlacer.cs` — **edited.** Builds the *selected* definition and exposes
+  `Select`.
+- `BuildNode.cs` — **edited.** `Place` takes a definition, instantiates its
+  prefab, and initializes it in one step.
+- `Projectile.cs` — **edited.** Remembers the tower that fired it and hands the
+  arrival back to it.
+
+That last one is the design decision worth stating. The projectile could carry a
+splash radius and a slow factor and apply them itself, and then it would need a
+field for every effect any tower will ever have. Instead it remembers its
+*source* and calls `source.OnProjectileHit(target, impactPoint)` on arrival, so
+each tower type's behavior lives in that tower type and there is still exactly one
+projectile class — one that knows how to travel and nothing else, which is what
+Phase 5 built it as.
+
+It also means a tower sold in Part B while its shot is mid-air leaves a projectile
+holding a destroyed reference. Same fake-null rule as the target, same one-line
+guard, and the shot simply fizzles.
 
 ## A2. Create the Tower Definitions
 
@@ -86,6 +105,19 @@ pebbles and does less damage per hit, so it is only worth it against groups —
 which is what Part C introduces. Frost does *no* damage at all, which forces it
 to be a support pick rather than a strictly-better pebble tower. A support tower
 that also deals damage is not a choice, it is an upgrade.
+
+The splash radius and the slow factor are **not** on the definition. They are
+serialized on `SplashTower` and `FrostTower`, on their prefabs, because a shared
+definition carrying every type's parameters is mostly meaningless fields for any
+given asset — and a field that is meaningless three times out of four is one
+somebody eventually sets by mistake. The definition holds what every tower has:
+cost, range, damage, fire rate, targeting, and which projectile to throw.
+
+Each definition also names the prefab it builds, and the prefab does **not** name
+its definition back. One direction only: `BuildNode.Place` instantiates
+`definition.Prefab` and calls `Initialize(definition)` on it before its `Start`
+runs, so a tower never exists without stats and there is never a second copy of
+the numbers to disagree with the first.
 
 ## A3. Build the Selection Panel
 
@@ -326,9 +358,14 @@ public void ResetForReuse()
     targetIndex = 0;
     despawning = false;    // Phase 7's double-despawn guard
     registered = false;    // Phase 7's live-count guard
-    speed = baseSpeed;     // Part A's frost slow must not be permanent
+    slowFactor = 1f;       // Part A's frost slow must not survive reuse
+    slowUntil = 0f;
 }
 ```
+
+Part A anticipated this one: the frost slow is applied as a multiplier at
+movement time rather than by writing to `speed`, so there is no original value to
+remember and restore — resetting is setting a multiplier back to 1.
 
 `Destroy` gives you a clean object every time and hides every one of these.
 Reuse does not. A pooled slime that keeps `despawning = true` from its last life

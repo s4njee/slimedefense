@@ -35,6 +35,13 @@ public class Slime : MonoBehaviour
     int targetIndex;
     SpriteRenderer aimRenderer;
 
+    // Speed multiplier from frost towers, and when it expires. Applied as a
+    // multiplier at movement time rather than by writing to `speed`, so there is
+    // no original value to remember and restore — and nothing to get wrong when
+    // Phase 8's pooling reuses a slime that was slowed when it died.
+    float slowFactor = 1f;
+    float slowUntil;
+
     // True once this slime has been counted onto the board, so it is counted off
     // exactly once no matter which way it leaves.
     bool registered;
@@ -54,6 +61,12 @@ public class Slime : MonoBehaviour
     public Vector3 AimPosition => aimRenderer != null && aimRenderer.enabled
         ? aimRenderer.bounds.center
         : transform.position;
+
+    /// <summary>
+    /// Remaining health. Towers set to <see cref="TargetingMode.LowestHealth"/>
+    /// compare it to decide what to finish off.
+    /// </summary>
+    public float Health => health;
 
     /// <summary>
     /// How far along the route this slime is, as its waypoint index minus a
@@ -149,15 +162,41 @@ public class Slime : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Slows this slime to <paramref name="factor"/> of its speed for
+    /// <paramref name="duration"/> seconds. Called by <see cref="FrostTower"/>.
+    ///
+    /// Slows do not stack, they compete: the strongest one wins and any hit
+    /// refreshes the timer. Stacking multiplicatively would make two frost towers
+    /// four times better than one, which is the kind of interaction that makes a
+    /// support tower either useless alone or mandatory in pairs.
+    /// </summary>
+    public void ApplySlow(float factor, float duration)
+    {
+        factor = Mathf.Clamp(factor, 0.05f, 1f);
+
+        if (factor < slowFactor || Time.time >= slowUntil)
+        {
+            slowFactor = factor;
+        }
+
+        slowUntil = Mathf.Max(slowUntil, Time.time + duration);
+    }
+
     void Update()
     {
+        if (Time.time >= slowUntil)
+        {
+            slowFactor = 1f;
+        }
+
         Vector3 target = route.GetPoint(targetIndex);
 
         // Move in the horizontal plane only, so terrain height differences
         // between waypoints don't stop the slime from arriving.
         target.y = transform.position.y;
 
-        transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, target, speed * slowFactor * Time.deltaTime);
 
         Vector3 toTarget = target - transform.position;
         if (toTarget.sqrMagnitude > 0.0001f)

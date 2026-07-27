@@ -1,0 +1,1788 @@
+fileFormatVersion: 2
+guid: 115c6611dd1c5ef47a2161754c49f460
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: slimesprite-green_0
+      rect:
+        serializedVersion: 2
+        x: 12
+        y: 1430
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 54b021db05e4acd4a80286ff82e6314e
+      internalID: 352116355
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_1
+      rect:
+        serializedVersion: 2
+        x: 247
+        y: 1430
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b636a399677fcd84cbb4cb0cc30c029f
+      internalID: -1592861415
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_2
+      rect:
+        serializedVersion: 2
+        x: 482
+        y: 1430
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 672b9181859d6c94e84fc46661fd1681
+      internalID: -1490208138
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_3
+      rect:
+        serializedVersion: 2
+        x: 717
+        y: 1430
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fc7c4ad39f78fd44d9f763cc3d12e7c0
+      internalID: 538386480
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_4
+      rect:
+        serializedVersion: 2
+        x: 952
+        y: 1430
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8785c740144858e4c9d8590a863c6387
+      internalID: -743953107
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_5
+      rect:
+        serializedVersion: 2
+        x: 1187
+        y: 1430
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a82de587b52814946a4e917643718d9b
+      internalID: -368235533
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_6
+      rect:
+        serializedVersion: 2
+        x: 1422
+        y: 1430
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fc3257e0ffd0b9e478cb4d2f24d94c97
+      internalID: -779244019
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_7
+      rect:
+        serializedVersion: 2
+        x: 1657
+        y: 1430
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4a17083fde6f2614ead8596915910b18
+      internalID: -1995280610
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_8
+      rect:
+        serializedVersion: 2
+        x: 1892
+        y: 1430
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6c5d83d0f48bea9498cfbe92b8772a10
+      internalID: -1816071425
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_9
+      rect:
+        serializedVersion: 2
+        x: 2127
+        y: 1430
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1e06a1bd0db17494ea15e66af5a280ec
+      internalID: -1281878252
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_10
+      rect:
+        serializedVersion: 2
+        x: 2362
+        y: 1430
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c3f4f443792d13e4886463c50c720eff
+      internalID: 1034583723
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_11
+      rect:
+        serializedVersion: 2
+        x: 2597
+        y: 1430
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9b783455d08a76949931d85776d724a1
+      internalID: 1283118586
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_12
+      rect:
+        serializedVersion: 2
+        x: 12
+        y: 1144
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c83dca1114a9b4d44b47f6020d2c553e
+      internalID: -1686746503
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_13
+      rect:
+        serializedVersion: 2
+        x: 247
+        y: 1144
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e53a13045d3c64c408a371aafd024c27
+      internalID: -291951148
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_14
+      rect:
+        serializedVersion: 2
+        x: 482
+        y: 1144
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dcaad15510ccccf468d0db2292e58290
+      internalID: -1265503777
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_15
+      rect:
+        serializedVersion: 2
+        x: 717
+        y: 1144
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 269b9a9c43b460c47b6f6598d7239da0
+      internalID: 1948665136
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_16
+      rect:
+        serializedVersion: 2
+        x: 952
+        y: 1144
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 428dbb8e13acfad419b9c7ea08e8dc8e
+      internalID: -684216976
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_17
+      rect:
+        serializedVersion: 2
+        x: 1187
+        y: 1144
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c212bca6d83a47f45af20957d1a2dc12
+      internalID: -714838043
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_18
+      rect:
+        serializedVersion: 2
+        x: 1422
+        y: 1144
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bb55e9e126afa4945814fc792ce4e859
+      internalID: 1120769550
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_19
+      rect:
+        serializedVersion: 2
+        x: 1657
+        y: 1144
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f6a3cc2a888c67144a065087571bca84
+      internalID: -664927238
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_20
+      rect:
+        serializedVersion: 2
+        x: 1892
+        y: 1144
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4955e409e0afbfe4ba51c9ee92c78c8f
+      internalID: -488669892
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_21
+      rect:
+        serializedVersion: 2
+        x: 2127
+        y: 1144
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0c45e81c1f80dee4e9433a5dcc7f788e
+      internalID: -642685365
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_22
+      rect:
+        serializedVersion: 2
+        x: 2362
+        y: 1144
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8bdbcb6e31331e646b3a698a847e5d35
+      internalID: -1347762323
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_23
+      rect:
+        serializedVersion: 2
+        x: 2597
+        y: 1144
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ae71156f94de23544bd036e3501aecee
+      internalID: 1232801114
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_24
+      rect:
+        serializedVersion: 2
+        x: 12
+        y: 858
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 57207495339b8ca4cb2f2cf21166de7a
+      internalID: 708338879
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_25
+      rect:
+        serializedVersion: 2
+        x: 247
+        y: 858
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ddb3754b41e9edc4da1e4a7609605518
+      internalID: 871552260
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_26
+      rect:
+        serializedVersion: 2
+        x: 482
+        y: 858
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eb043bd742261c74b8d92d4cc7f43f7d
+      internalID: 876983585
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_27
+      rect:
+        serializedVersion: 2
+        x: 717
+        y: 858
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5ebf8d15f8044c046816e070151acbb3
+      internalID: 1602521921
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_28
+      rect:
+        serializedVersion: 2
+        x: 952
+        y: 858
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cc16cf03a22dc5e43b3871b01d2db1a1
+      internalID: 1610950584
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_29
+      rect:
+        serializedVersion: 2
+        x: 1187
+        y: 858
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 82232432fb2e30a4dbd03d02fbaaa37e
+      internalID: -680096703
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_30
+      rect:
+        serializedVersion: 2
+        x: 1422
+        y: 858
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b394cb864db63e94b884f18b8c706dcd
+      internalID: -1683883620
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_31
+      rect:
+        serializedVersion: 2
+        x: 1657
+        y: 858
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 69b568507d1ad884f9ccc3817a7577ec
+      internalID: 279914757
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_32
+      rect:
+        serializedVersion: 2
+        x: 1892
+        y: 858
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e589e22df9c81634aa3be8b84d62ae1f
+      internalID: -1027391049
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_33
+      rect:
+        serializedVersion: 2
+        x: 2127
+        y: 858
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c2d9e952cb17344468ebc41bad895a8e
+      internalID: 979201428
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_34
+      rect:
+        serializedVersion: 2
+        x: 2362
+        y: 858
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 82950e9ab743ddd47bf3302b2b120aff
+      internalID: -1132505902
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_35
+      rect:
+        serializedVersion: 2
+        x: 2597
+        y: 858
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 559609e8485f4cc41ac4a8b57bbcf934
+      internalID: 337634823
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_36
+      rect:
+        serializedVersion: 2
+        x: 12
+        y: 572
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 859aeae464b768449a75a3cb9a323341
+      internalID: -96419478
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_37
+      rect:
+        serializedVersion: 2
+        x: 247
+        y: 572
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9d1ac10c4cab9f44d8a57eceed384b61
+      internalID: 1297303454
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_38
+      rect:
+        serializedVersion: 2
+        x: 482
+        y: 572
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 62fc1064a64089e4b8e90cc127893644
+      internalID: 1626954945
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_39
+      rect:
+        serializedVersion: 2
+        x: 717
+        y: 572
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6684432927ad3604ab4726cc30a53139
+      internalID: 1195082269
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_40
+      rect:
+        serializedVersion: 2
+        x: 952
+        y: 572
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 22a6e4b61045e90478234752bdb6ad44
+      internalID: 118686915
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_41
+      rect:
+        serializedVersion: 2
+        x: 1187
+        y: 572
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4cb07c539ad1e6642b34de3ca2df684d
+      internalID: 940615333
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_42
+      rect:
+        serializedVersion: 2
+        x: 1422
+        y: 572
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 628e98e14ce94e74781b7e698116221f
+      internalID: 968919801
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_43
+      rect:
+        serializedVersion: 2
+        x: 1657
+        y: 572
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7e681842d4940cb49bf97d62c551bffd
+      internalID: 1565993799
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_44
+      rect:
+        serializedVersion: 2
+        x: 1892
+        y: 572
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6b98171ea755499458a27c8cb150015f
+      internalID: 1789532070
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_45
+      rect:
+        serializedVersion: 2
+        x: 2127
+        y: 572
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 59d50b84ccdbdc44096aeb49a0256589
+      internalID: 1383024287
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_46
+      rect:
+        serializedVersion: 2
+        x: 2362
+        y: 572
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b4bafd149bc8a9048bc3e00a38f8e95f
+      internalID: 1391677581
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_47
+      rect:
+        serializedVersion: 2
+        x: 2597
+        y: 572
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e0487fdd8d946c249bb96b19a8a6e935
+      internalID: 1558359913
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_48
+      rect:
+        serializedVersion: 2
+        x: 12
+        y: 286
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d1b43a9619a2d934fac7363c0bd3b9c3
+      internalID: -340656757
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_49
+      rect:
+        serializedVersion: 2
+        x: 247
+        y: 286
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3dcf9e30bc078e24da37dbe2a43c69a4
+      internalID: 1637236519
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_50
+      rect:
+        serializedVersion: 2
+        x: 482
+        y: 286
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8f2c1e8539fb0fc4986438da95c3ff9f
+      internalID: 296652695
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_51
+      rect:
+        serializedVersion: 2
+        x: 717
+        y: 286
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2f714685a8c50d847af6af1b596724b8
+      internalID: -1306490578
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_52
+      rect:
+        serializedVersion: 2
+        x: 952
+        y: 286
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9cf74d81ba3eb164b8258746d0eb0f12
+      internalID: 1283338020
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_53
+      rect:
+        serializedVersion: 2
+        x: 1187
+        y: 286
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6fb1c3d6de05e754fbab11d515dc4f6f
+      internalID: 1522679289
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_54
+      rect:
+        serializedVersion: 2
+        x: 1422
+        y: 286
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4b202c1bececc5e4faf0c8f39a6675cd
+      internalID: -1312864320
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_55
+      rect:
+        serializedVersion: 2
+        x: 1657
+        y: 286
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 38cd2fbb2ef41d74fb44774f69d4864d
+      internalID: -189987664
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_56
+      rect:
+        serializedVersion: 2
+        x: 1892
+        y: 286
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 037c7dba9123236458c949411ce920b7
+      internalID: -963983407
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_57
+      rect:
+        serializedVersion: 2
+        x: 2127
+        y: 286
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ca5f3b58b9fab6645a9986df148270c7
+      internalID: -327863033
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_58
+      rect:
+        serializedVersion: 2
+        x: 2362
+        y: 286
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 888c1fa7913156942bbd336128b11eb3
+      internalID: -1820823615
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_59
+      rect:
+        serializedVersion: 2
+        x: 2597
+        y: 286
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0c4290c52d01fbb47bb0ba4c2ab07df4
+      internalID: -1978730341
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_60
+      rect:
+        serializedVersion: 2
+        x: 12
+        y: 0
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1efad20cf79ae15479b214a6db6a15b2
+      internalID: -471428636
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_61
+      rect:
+        serializedVersion: 2
+        x: 247
+        y: 0
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5dca2bc6ec015d344a5fe6dffb8431da
+      internalID: 1860307700
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_62
+      rect:
+        serializedVersion: 2
+        x: 482
+        y: 0
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2975de1eb7371df44b771af85bde7b66
+      internalID: -311371296
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_63
+      rect:
+        serializedVersion: 2
+        x: 717
+        y: 0
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 02ee26068a16ce446bcb3ecb4f91d046
+      internalID: -244908110
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_64
+      rect:
+        serializedVersion: 2
+        x: 952
+        y: 0
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 62a162c2ac9909f42b66f2ed398865e3
+      internalID: -284296003
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_65
+      rect:
+        serializedVersion: 2
+        x: 1187
+        y: 0
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 33333276bdaa28a4cac54868e804f4e1
+      internalID: 1778198718
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_66
+      rect:
+        serializedVersion: 2
+        x: 1422
+        y: 0
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c46a1649f9ebe5447a5b31bcbc5657f4
+      internalID: -1578987125
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_67
+      rect:
+        serializedVersion: 2
+        x: 1657
+        y: 0
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f77e6dc9c59063146ac29643f3d5b3f8
+      internalID: -1793293378
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_68
+      rect:
+        serializedVersion: 2
+        x: 1892
+        y: 0
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6a971f7ea0064d043b6efd55e09a4daf
+      internalID: 1788226805
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_69
+      rect:
+        serializedVersion: 2
+        x: 2127
+        y: 0
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f327b3248fc78b8459bf5094b6cfa0ff
+      internalID: 711678585
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_70
+      rect:
+        serializedVersion: 2
+        x: 2362
+        y: 0
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2dcb4cc4069a4674ea6f7d45456ca89f
+      internalID: 1461628584
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: slimesprite-green_71
+      rect:
+        serializedVersion: 2
+        x: 2597
+        y: 0
+        width: 235
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 082b5fb1823dbfc48833751d649e4748
+      internalID: -2013048506
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: eb9394a1e185eb44c989020ab0db29c2
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":12.0,"y":6.0},"gridSpriteSize":{"x":235.0,"y":286.0},"gridSpriteOffset":{"x":12.0,"y":6.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      slimesprite-green_0: 352116355
+      slimesprite-green_1: -1592861415
+      slimesprite-green_10: 1034583723
+      slimesprite-green_11: 1283118586
+      slimesprite-green_12: -1686746503
+      slimesprite-green_13: -291951148
+      slimesprite-green_14: -1265503777
+      slimesprite-green_15: 1948665136
+      slimesprite-green_16: -684216976
+      slimesprite-green_17: -714838043
+      slimesprite-green_18: 1120769550
+      slimesprite-green_19: -664927238
+      slimesprite-green_2: -1490208138
+      slimesprite-green_20: -488669892
+      slimesprite-green_21: -642685365
+      slimesprite-green_22: -1347762323
+      slimesprite-green_23: 1232801114
+      slimesprite-green_24: 708338879
+      slimesprite-green_25: 871552260
+      slimesprite-green_26: 876983585
+      slimesprite-green_27: 1602521921
+      slimesprite-green_28: 1610950584
+      slimesprite-green_29: -680096703
+      slimesprite-green_3: 538386480
+      slimesprite-green_30: -1683883620
+      slimesprite-green_31: 279914757
+      slimesprite-green_32: -1027391049
+      slimesprite-green_33: 979201428
+      slimesprite-green_34: -1132505902
+      slimesprite-green_35: 337634823
+      slimesprite-green_36: -96419478
+      slimesprite-green_37: 1297303454
+      slimesprite-green_38: 1626954945
+      slimesprite-green_39: 1195082269
+      slimesprite-green_4: -743953107
+      slimesprite-green_40: 118686915
+      slimesprite-green_41: 940615333
+      slimesprite-green_42: 968919801
+      slimesprite-green_43: 1565993799
+      slimesprite-green_44: 1789532070
+      slimesprite-green_45: 1383024287
+      slimesprite-green_46: 1391677581
+      slimesprite-green_47: 1558359913
+      slimesprite-green_48: -340656757
+      slimesprite-green_49: 1637236519
+      slimesprite-green_5: -368235533
+      slimesprite-green_50: 296652695
+      slimesprite-green_51: -1306490578
+      slimesprite-green_52: 1283338020
+      slimesprite-green_53: 1522679289
+      slimesprite-green_54: -1312864320
+      slimesprite-green_55: -189987664
+      slimesprite-green_56: -963983407
+      slimesprite-green_57: -327863033
+      slimesprite-green_58: -1820823615
+      slimesprite-green_59: -1978730341
+      slimesprite-green_6: -779244019
+      slimesprite-green_60: -471428636
+      slimesprite-green_61: 1860307700
+      slimesprite-green_62: -311371296
+      slimesprite-green_63: -244908110
+      slimesprite-green_64: -284296003
+      slimesprite-green_65: 1778198718
+      slimesprite-green_66: -1578987125
+      slimesprite-green_67: -1793293378
+      slimesprite-green_68: 1788226805
+      slimesprite-green_69: 711678585
+      slimesprite-green_7: -1995280610
+      slimesprite-green_70: 1461628584
+      slimesprite-green_71: -2013048506
+      slimesprite-green_8: -1816071425
+      slimesprite-green_9: -1281878252
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
