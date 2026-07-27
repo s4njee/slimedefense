@@ -3,7 +3,8 @@ using UnityEngine;
 /// <summary>
 /// Walks a slime along a <see cref="WaypointRoute"/> from the spawn point to the
 /// goal, then despawns. Phase 5 gave it health that towers can subtract from and
-/// a death of its own; losing a life at the goal still comes in Phase 6.
+/// a death of its own; Phase 6 attached a price to both outcomes — killing one
+/// pays the player, and letting one reach the goal costs a life.
 /// </summary>
 public class Slime : MonoBehaviour
 {
@@ -13,6 +14,18 @@ public class Slime : MonoBehaviour
     [Tooltip("How close the slime must get to a waypoint before moving to the next one.")]
     [SerializeField] float arriveDistance = 0.15f;
 
+    [Tooltip("Money paid to the player when this slime dies. An int because money is counted, " +
+             "not measured: a fractional balance means CanAfford(50) says no while a HUD " +
+             "rounding to whole numbers displays 50.")]
+    [Min(0)]
+    [SerializeField] int reward = 10;
+
+    [Tooltip("Lives taken when this slime reaches the goal. A field rather than a hardcoded 1 " +
+             "so Phase 8's boss slime, which costs five, is a number on a prefab instead of a " +
+             "new code path.")]
+    [Min(0)]
+    [SerializeField] int lifeCost = 1;
+
     [Tooltip("Extra yaw applied after aiming down the path, in degrees. Unity's LookRotation " +
              "points a transform's +Z at the target, but the imported slime model faces -Z, " +
              "so it needs 180 here to walk face-first instead of backwards.")]
@@ -20,6 +33,27 @@ public class Slime : MonoBehaviour
 
     WaypointRoute route;
     int targetIndex;
+    SpriteRenderer aimRenderer;
+
+    // True once this slime has been counted onto the board, so it is counted off
+    // exactly once no matter which way it leaves.
+    bool registered;
+
+    // Set the moment an outcome is decided. Destroy is deferred to the end of the
+    // frame, so without this a second projectile landing in the same frame — two
+    // towers, one slime, a routine occurrence — could pay the reward twice and
+    // decrement the live count twice.
+    bool despawning;
+
+    /// <summary>
+    /// World-space point projectiles should home toward. The slime's root stays
+    /// on the path at ground level, while its animated sprite can stretch and
+    /// jump above it. Renderer bounds follow the currently displayed frame, so
+    /// their center keeps shots visually attached to the airborne slime.
+    /// </summary>
+    public Vector3 AimPosition => aimRenderer != null && aimRenderer.enabled
+        ? aimRenderer.bounds.center
+        : transform.position;
 
     /// <summary>
     /// How far along the route this slime is, as its waypoint index minus a
@@ -62,6 +96,34 @@ public class Slime : MonoBehaviour
         }
     }
 
+    void Awake()
+    {
+        // Prefer the SpriteRenderer that owns the sprite Animator. This avoids
+        // accidentally selecting an unused sprite child left in the prefab.
+        SpriteRenderer[] renderers = GetComponentsInChildren<SpriteRenderer>();
+
+        foreach (SpriteRenderer candidate in renderers)
+        {
+            if (candidate.enabled && candidate.GetComponent<Animator>() != null)
+            {
+                aimRenderer = candidate;
+                break;
+            }
+        }
+
+        if (aimRenderer == null)
+        {
+            foreach (SpriteRenderer candidate in renderers)
+            {
+                if (candidate.enabled)
+                {
+                    aimRenderer = candidate;
+                    break;
+                }
+            }
+        }
+    }
+
     void Start()
     {
         // Lets a slime dragged into the scene by hand find the route on its own.
@@ -74,6 +136,16 @@ public class Slime : MonoBehaviour
         {
             Debug.LogError($"{name} has no usable WaypointRoute. Add the WaypointRoute component to the Path object.", this);
             enabled = false;
+            return;
+        }
+
+        // Counted only once the slime is actually going to walk. A slime that
+        // failed the check above never moves and never despawns, and registering
+        // it would leave a phantom on the board that victory waits forever on.
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.RegisterSlime();
+            registered = true;
         }
     }
 
@@ -131,21 +203,84 @@ public class Slime : MonoBehaviour
         }
     }
 
-    // Die and ReachGoal do the same thing today, and that duplication is
-    // deliberate. In Phase 6 one of them awards money and the other costs a
-    // life. Collapsing them now because they look identical means splitting them
-    // again one phase later.
+    // Phase 5 left these two doing the same thing and said the duplication was
+    // deliberate because Phase 6 would split them. This is the split: one pays
+    // the player, the other charges them.
+    //
+    // Neither belongs in OnDestroy, which is the tempting shortcut since every
+    // outcome destroys the slime. OnDestroy also fires when the scene unloads and
+    // when Play mode stops, so leaving Play mid-wave would pay out for every
+    // slime still walking, into a manager that may already be gone. Death is a
+    // game event; destruction is a memory event. They coincide today and stop
+    // coinciding in Phase 8, when pooled slimes are returned rather than
+    // destroyed.
 
     void Die()
     {
-        // Phase 6 will pay the player here before the slime despawns.
-        // Phase 9 will spawn a death effect.
+        if (despawning)
+        {
+            return;
+        }
+
+        despawning = true;
+        Unregister();
+
+        // The reward is on the slime rather than on whatever killed it, for the
+        // same reason TakeDamage is: the killer should not need to know what its
+        // victim is worth. Phase 8's area-of-effect tower kills six slimes and
+        // pays out six rewards without a line of new economy code.
+        //
+        // An explicit null check rather than `?.`, because Instance is a
+        // UnityEngine.Object and only the overloaded == knows about destroyed
+        // ones. The manager is normally there; this covers the scene being torn
+        // down around a slime mid-frame.
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.AddMoney(reward);
+        }
+
+        // Phase 9 will spawn a death effect here.
         Destroy(gameObject);
     }
 
     void ReachGoal()
     {
-        // Phase 6 will subtract a life here before the slime despawns.
+        if (despawning)
+        {
+            return;
+        }
+
+        despawning = true;
+
+        // The life is taken *before* this slime is counted off the board, and the
+        // order is load-bearing. Unregistering first would run the victory check
+        // while lives were still non-zero: the last slime of the last wave
+        // reaching the goal would clear the board, declare victory, and only then
+        // take the life that ends the run — announcing both outcomes. Losing the
+        // life first means IsGameOver is already set when the victory check runs,
+        // and defeat wins the tie.
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.LoseLife(lifeCost);
+        }
+
+        Unregister();
+
         Destroy(gameObject);
+    }
+
+    void Unregister()
+    {
+        if (!registered)
+        {
+            return;
+        }
+
+        registered = false;
+
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.UnregisterSlime();
+        }
     }
 }
