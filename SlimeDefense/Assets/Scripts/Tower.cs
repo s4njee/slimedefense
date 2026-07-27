@@ -9,12 +9,15 @@ using UnityEngine;
 /// the literal radius of the physics query below, so what a selected tower shows
 /// in the Scene view is exactly what it reaches.
 ///
-/// Money is still not involved. <see cref="Cost"/> holds a number nothing spends
-/// until Phase 6.
+/// Phase 6 added money without touching this file. <see cref="Cost"/> was
+/// already here with a public accessor, and <see cref="TowerPlacer"/> reads it
+/// off the prefab before building — a tower has no business knowing whether the
+/// player could afford it.
 /// </summary>
 public class Tower : MonoBehaviour
 {
-    [Tooltip("What this tower costs to build. Unused until Phase 6 adds currency.")]
+    [Tooltip("What this tower costs to build. TowerPlacer reads this off the prefab and charges " +
+             "it, so a new tower type in Phase 8 arrives with its price attached.")]
     [Min(0)]
     [SerializeField] int cost = 50;
 

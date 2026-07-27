@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 /// <summary>
@@ -68,6 +69,17 @@ public class TowerPlacer : MonoBehaviour
             Debug.LogWarning($"{name} has an empty Build Node Mask, so no node can ever be hit. " +
                              "Set it to the BuildNode layer.", this);
         }
+
+        // Checked here and not stored. Every Awake in the scene has run by now,
+        // so a missing manager is a missing GameObject rather than an ordering
+        // problem — and towers being free is not a state worth leaving the game
+        // quietly running in.
+        if (GameManager.Instance == null)
+        {
+            Debug.LogError($"{name} found no GameManager, so towers would cost nothing. " +
+                           "Add a GameManager to the scene.", this);
+            enabled = false;
+        }
     }
 
     void Update()
@@ -87,10 +99,32 @@ public class TowerPlacer : MonoBehaviour
     {
         BuildNode found = null;
 
+        // A pointer over the HUD is not a pointer on the world behind it. Checked
+        // here during hover rather than at press time, so the node under a button
+        // does not highlight either — a node that lights up under the cursor and
+        // then refuses to build reads as a bug.
+        //
+        // Worth testing on a touchscreen specifically. This is answered from the
+        // UI module's view of the pointer, which on touch can lag the raw pointer
+        // by a frame, so the mouse case can look perfect while a tap near a
+        // button's edge occasionally still builds.
+        bool overUi = EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
+
         // Null when no pointing device is present — a gamepad-only session, or
         // the first frames before a device is detected. Reading position off it
         // regardless is a NullReferenceException per frame.
-        if (Pointer.current != null)
+
+
+        // A press that landed on the HUD is not a press on the world behind it.
+// Checked during hover rather than at press time so the node under the button
+// does not highlight either — a node that lights up under the cursor and then
+// refuses to build reads as a bug.
+        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+        {
+            found = null;
+        }
+
+        if (!overUi && Pointer.current != null)
         {
             Vector2 screenPoint = Pointer.current.position.ReadValue();
             Ray ray = placementCamera.ScreenPointToRay(screenPoint);
@@ -147,9 +181,43 @@ public class TowerPlacer : MonoBehaviour
             return;
         }
 
-        // Phase 6 checks and spends currency here. Phase 7 adds an
-        // EventSystem.current.IsPointerOverGameObject() guard above, so a tap on
-        // the HUD does not also build a tower in the world behind it.
-        hovered.Place(towerPrefab);
+        // Building on a board that has already been lost only ever reads as a
+        // bug. Placement is the one system that has to stand down on its own —
+        // there is no global pause, by choice: Time.timeScale = 0 would also stop
+        // the coroutines Phase 7's game-over screen needs to animate itself in.
+        if (GameManager.Instance.IsGameOver)
+        {
+            return;
+        }
+
+        // Read off the prefab asset before anything is instantiated, which is why
+        // Tower needed no changes this phase: a tower type added in Phase 8
+        // arrives with its price attached instead of needing an entry in a lookup
+        // table here.
+        int price = towerPrefab.Cost;
+
+        // Ask before building. The alternative — spend, build, refund on failure
+        // — is a second code path that has to stay in sync with the first one
+        // forever. Refusing costs nothing and logs nothing: a player clicking a
+        // node they cannot pay for is the most ordinary thing they do.
+        if (!GameManager.Instance.CanAfford(price))
+        {
+            return;
+        }
+
+        // Phase 7 adds an EventSystem.current.IsPointerOverGameObject() guard
+        // above all of this, so a tap on the HUD does not also build a tower in
+        // the world behind it.
+        Tower built = hovered.Place(towerPrefab);
+
+        // Place returns null when it refuses. Charging before this line pays for
+        // towers that were never built, and the balance drifts down over a long
+        // run in a way that looks like a rounding bug and is not.
+        if (built == null)
+        {
+            return;
+        }
+
+        GameManager.Instance.TrySpend(price);
     }
 }

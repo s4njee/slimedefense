@@ -163,8 +163,8 @@ void Awake()
 
     Instance = this;
 
-    money = startingMoney;
-    lives = startingLives;
+    Money = startingMoney;
+    Lives = startingLives;
 }
 
 void OnDestroy()
@@ -345,7 +345,7 @@ int price = towerPrefab.Cost;
 
 // Ask before building. The alternative — spend, build, refund on failure — is a
 // second code path that has to stay in sync with the first one forever.
-if (!gameManager.CanAfford(price))
+if (!GameManager.Instance.CanAfford(price))
 {
     return;
 }
@@ -360,7 +360,7 @@ if (built == null)
     return;
 }
 
-gameManager.TrySpend(price);
+GameManager.Instance.TrySpend(price);
 ```
 
 Check, build, then charge. The player is never charged for a tower that does not
@@ -373,7 +373,7 @@ in Phase 8 arrives with its cost attached rather than needing an entry in a
 lookup table somewhere in the placer.
 
 Placement is also the one system that should refuse to work after a loss, so the
-same method returns early on `gameManager.IsGameOver`. Building towers on a board
+same method returns early on `GameManager.Instance.IsGameOver`. Building towers on a board
 that has already been lost is the sort of thing that only reads as a bug.
 
 `BuildNode` is deliberately not involved. A node knows whether it is occupied and

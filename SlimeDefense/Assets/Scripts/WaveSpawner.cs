@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -41,8 +42,40 @@ public class WaveSpawner : MonoBehaviour
     /// <summary>True while a wave sequence is spawning.</summary>
     public bool IsRunning => runningWaves != null;
 
+    /// <summary>Which wave is spawning, counting from 1. Zero before the run starts.</summary>
+    public int CurrentWave { get; private set; }
+
+    /// <summary>How many waves this spawner will play.</summary>
+    public int WaveCount => waves != null ? waves.Length : 0;
+
+    /// <summary>Raised with (current, total) as each wave begins.</summary>
+    public event Action<int, int> WaveChanged;
+
+    /// <summary>
+    /// Raised when the sequence starts. The HUD hides its Start Wave button on
+    /// this: <see cref="StartWaves"/> plays the whole list, so there is nothing
+    /// left to press it for.
+    /// </summary>
+    public event Action WavesStarted;
+
+    /// <summary>
+    /// Raised when the last wave has finished spawning. Not the end of the run —
+    /// those slimes are still walking.
+    /// </summary>
+    public event Action WavesFinished;
+
     void Start()
     {
+        // Start rather than OnEnable, which is the more usual pairing for
+        // subscriptions and the wrong one here: OnEnable can run before the
+        // manager's Awake and find nothing to subscribe to. Every Awake in the
+        // scene has finished by the time any Start runs. Nothing in this scene
+        // gets toggled, so pairing with OnDestroy loses nothing.
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.GameOver += OnGameOver;
+        }
+
         // Convenience for a spawner dropped into the scene without wiring, and
         // the same fallback Slime uses. Explicit assignment in the Inspector is
         // still the intended setup.
@@ -70,6 +103,25 @@ public class WaveSpawner : MonoBehaviour
         }
     }
 
+    void OnDestroy()
+    {
+        // An event holds a strong reference to its subscriber, so a destroyed
+        // spawner that never unsubscribed stays in the manager's invocation list
+        // and throws the next time the event fires.
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.GameOver -= OnGameOver;
+        }
+    }
+
+    // Nothing more elaborate than this. Slimes already on the route keep walking
+    // and cost nothing when they arrive, because LoseLife returns immediately
+    // once the run is over. What "stopped" means is each system's own decision.
+    void OnGameOver()
+    {
+        StopWaves();
+    }
+
     /// <summary>
     /// Begins the wave sequence. Public so the Phase 7 HUD button can call it
     /// once <see cref="autoStart"/> is switched off.
@@ -86,6 +138,8 @@ public class WaveSpawner : MonoBehaviour
         // itself belongs to this MonoBehaviour: disabling this object or
         // destroying it stops the sequence mid-wave, silently and without error.
         runningWaves = StartCoroutine(RunWaves());
+
+        WavesStarted?.Invoke();
     }
 
     /// <summary>
@@ -114,6 +168,9 @@ public class WaveSpawner : MonoBehaviour
         {
             WaveDefinition wave = waves[i];
 
+            CurrentWave = i + 1;
+            WaveChanged?.Invoke(CurrentWave, WaveCount);
+
             if (wave == null || !wave.IsValid)
             {
                 Debug.LogWarning($"{name}: wave {i} is missing or has no slime prefab. Skipping it.", this);
@@ -135,6 +192,18 @@ public class WaveSpawner : MonoBehaviour
         // Clearing the handle marks the sequence finished, so IsRunning is
         // accurate and StartWaves() can legitimately run the list again.
         runningWaves = null;
+
+        WavesFinished?.Invoke();
+
+        // The manager is told directly rather than left to find this object and
+        // subscribe. Every other system in the project calls into the manager and
+        // the manager raises events outward; reversing that for one caller would
+        // mean the manager holding a reference to the spawner and caring whether
+        // it exists yet.
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.NotifyAllWavesSpawned();
+        }
     }
 
     // Spawns one wave's slimes, spaced apart in time.
