@@ -8,6 +8,30 @@ section.
 
 ## Notes
 
+### 2026-07-27 06:10 -05:00 | Phase 5
+
+Phase 5 is complete. Towers detect slimes inside their `Range`, fire projectiles
+at the one furthest along the route, and slimes die at zero health. Where the
+tower goes now decides which slimes get through.
+
+Every item on the Phase 5 completion checklist in `phase5.md` is satisfied.
+`Projectile.cs` is new; `Tower.cs` gained detection, targeting, and firing;
+`Slime.cs` gained `RouteProgress`, `TakeDamage`, and a `Die` separate from
+`ReachGoal`. Slimes sit on the `Slime` layer with a trigger collider, and the
+tower's `Slime Mask` matches it, so detection never considers terrain, nodes, or
+other towers.
+
+Targeting is first-in-line rather than nearest, because the slime closest to the
+goal is the most urgent threat. Projectiles home on their target and null-check
+it every frame, so a slime dying mid-flight is a shot that gives up rather than a
+`MissingReferenceException`.
+
+Killing a slime still pays nothing and letting one through still costs nothing.
+`Die` and `ReachGoal` are the two hooks waiting for Phase 6 to wire money and
+lives into.
+
+![Towers shooting slimes in Play mode](screenshots/phase5.webp)
+
 ### 2026-07-26 10:09 -05:00 | Phase 4
 
 Phase 4 is complete. Clicking a build node beside the path places a tower on it,
