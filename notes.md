@@ -8,6 +8,61 @@ section.
 
 ## Notes
 
+### 2026-07-27 15:15 -05:00 | Phase 8A
+
+Phase 8 Part A is complete. There are three tower types now, a panel to pick
+between them, and money finally buys different things rather than more of the
+same thing.
+
+`TowerDefinition.cs` is new and holds one type's stats as an asset, the same way
+`WaveDefinition` holds a wave. `Tower.cs` reads its numbers from one of those
+instead of carrying its own, and `SplashTower.cs` and `FrostTower.cs` override
+what happens when a shot lands. `TowerPicker.cs` drives the panel and is the
+first thing besides a label to subscribe to `MoneyChanged` — buttons grey out
+when you cannot afford them.
+
+The split the phase turns on: **towers vary by behaviour, so they are subclasses;
+their numbers vary by value, so those are assets.** A splash tower is not a
+pebble tower with a splash radius of zero.
+
+`Projectile.cs` now remembers the *tower* that fired it and hands the arrival
+back to it, rather than carrying a damage number. That keeps one projectile class
+that knows how to travel and nothing else, and every effect in the tower type it
+belongs to. It also means a tower sold mid-flight in Part B leaves a shot holding
+a destroyed reference, which is guarded the same way the dead target is.
+
+Four things broke, and every one of them was silent:
+
+- The picker's three "buttons" were 3D `TextMeshPro` objects — no `Button`, no
+  `Image`, and not even a `Graphic` to raycast against. They were never going to
+  receive a click. **GameObject > 3D Object > Text** and **GameObject > UI >
+  Button** are one menu apart.
+- Replacing `TowerPlacer`'s `Tower Prefab` field with `Default Definition` left
+  the slot empty, and the placer disables itself when it has nothing to build. It
+  looked like every one of the 200 build nodes had stopped working.
+- All three tower models sat at a lateral offset inside their prefabs, so a
+  placed tower stood beside its node rather than on it — worst on the frost
+  tower, whose ×8 root scale multiplied a small offset into 3.5 world units. The
+  logic was always on the node; only the mesh was elsewhere.
+- The splash tower was 4.09 units underground. Its mesh bounds came out of the
+  binary FBX directly: all three models are Z-up with the pivot at their centre,
+  so the base sits at zero when the model's local Y is the negative of its lowest
+  vertex. The ruined keep and the mage spire are still planted 1.11 and 0.63
+  units into the ground, which currently looks deliberate.
+
+Alongside this, `OrbitCamera.cs` gives the player a camera at last — right-drag
+orbits, middle-drag pans, the wheel zooms, and two fingers pan, pinch, and twist.
+Left-click stays purely placement, because `TowerPlacer` acts the instant the
+button goes down and could never tell a drag from a click. It rebuilds the
+transform from a pivot, a yaw, a pitch, and a distance every frame, which also
+zeroed the 9.4 degrees of camera roll that `SpriteBillboard` had been copying
+onto every slime sprite.
+
+Parts B, C, and D — upgrades and selling, enemy variety, and object pooling — are
+still ahead.
+
+![Three tower types, the picker panel, and the orbit camera](screenshots/phase8_1.avif)
+
 ### 2026-07-27 11:35 -05:00 | Phase 7
 
 Custom sprites are enabled. The slime is now a billboarded animated sprite rather
