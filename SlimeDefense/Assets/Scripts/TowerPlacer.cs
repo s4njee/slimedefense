@@ -18,8 +18,9 @@ using UnityEngine.InputSystem;
 /// </summary>
 public class TowerPlacer : MonoBehaviour
 {
-    [Tooltip("The tower built on click. Phase 8 turns this single prefab into a selection.")]
-    [SerializeField] Tower towerPrefab;
+    [Tooltip("The tower type selected when the game starts, before the player picks one. " +
+             "Phase 8 turned the single prefab this used to hold into a choice.")]
+    [SerializeField] TowerDefinition defaultDefinition;
 
     [Tooltip("Layers the placement ray may hit. Set this to the BuildNode layer only — " +
              "this mask is what makes building on the path impossible.")]
@@ -36,6 +37,39 @@ public class TowerPlacer : MonoBehaviour
     // The node under the pointer, or null. Held between frames so the highlight
     // can be cleared from the node the pointer just left.
     BuildNode hovered;
+
+    /// <summary>
+    /// The tower type the next click will build. Set by
+    /// <see cref="TowerPicker"/>; never null once Start has run, so a player who
+    /// never touches the picker can still build.
+    /// </summary>
+    public TowerDefinition Selected { get; private set; }
+
+    /// <summary>Raised when the selection changes, so the picker can show which button is active.</summary>
+    public event System.Action<TowerDefinition> SelectionChanged;
+
+    /// <summary>
+    /// Chooses the tower type built by subsequent clicks. Affordability is
+    /// deliberately not checked here — the player is allowed to select a tower
+    /// they cannot yet afford, and find out at the node rather than being unable
+    /// to look at it.
+    /// </summary>
+    public void Select(TowerDefinition definition)
+    {
+        if (definition == null || !definition.IsValid)
+        {
+            Debug.LogWarning($"{name} was asked to select a missing or incomplete tower definition.", this);
+            return;
+        }
+
+        if (Selected == definition)
+        {
+            return;
+        }
+
+        Selected = definition;
+        SelectionChanged?.Invoke(Selected);
+    }
 
     void Start()
     {
@@ -54,12 +88,15 @@ public class TowerPlacer : MonoBehaviour
             return;
         }
 
-        if (towerPrefab == null)
+        if (defaultDefinition == null || !defaultDefinition.IsValid)
         {
-            Debug.LogError($"{name} has no tower prefab assigned, so clicks cannot build anything.", this);
+            Debug.LogError($"{name} has no usable default tower definition, so clicks cannot build " +
+                           "anything until the player picks a tower.", this);
             enabled = false;
             return;
         }
+
+        Select(defaultDefinition);
 
         // A mask of 0 matches no layers at all, so every ray misses and every
         // click silently does nothing. That reads as broken code rather than an
@@ -190,11 +227,15 @@ public class TowerPlacer : MonoBehaviour
             return;
         }
 
-        // Read off the prefab asset before anything is instantiated, which is why
-        // Tower needed no changes this phase: a tower type added in Phase 8
-        // arrives with its price attached instead of needing an entry in a lookup
-        // table here.
-        int price = towerPrefab.Cost;
+        if (Selected == null || !Selected.IsValid)
+        {
+            return;
+        }
+
+        // Read off the definition asset before anything is instantiated. This is
+        // why adding a tower type needs no changes here: a new type arrives with
+        // its own price rather than needing an entry in a lookup table.
+        int price = Selected.Cost;
 
         // Ask before building. The alternative — spend, build, refund on failure
         // — is a second code path that has to stay in sync with the first one
@@ -205,10 +246,7 @@ public class TowerPlacer : MonoBehaviour
             return;
         }
 
-        // Phase 7 adds an EventSystem.current.IsPointerOverGameObject() guard
-        // above all of this, so a tap on the HUD does not also build a tower in
-        // the world behind it.
-        Tower built = hovered.Place(towerPrefab);
+        Tower built = hovered.Place(Selected);
 
         // Place returns null when it refuses. Charging before this line pays for
         // towers that were never built, and the balance drifts down over a long

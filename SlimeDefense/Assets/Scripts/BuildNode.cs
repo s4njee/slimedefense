@@ -85,19 +85,26 @@ public class BuildNode : MonoBehaviour
     }
 
     /// <summary>
-    /// Builds <paramref name="prefab"/> on this node and returns the new tower,
+    /// Builds <paramref name="definition"/>'s tower on this node and returns it,
     /// or null if the node was already occupied. The caller is expected to check
     /// <see cref="IsOccupied"/> first; this re-checks anyway, because a rule
     /// enforced in one place is a rule, and a rule enforced only at the call
     /// site is a suggestion.
+    ///
+    /// Takes a definition rather than a prefab so that instantiating a tower and
+    /// handing it its stats happen in the same place. Split across two call sites
+    /// they eventually disagree, and a tower running on the wrong definition is
+    /// not something you notice until the numbers look odd.
     /// </summary>
-    public Tower Place(Tower prefab)
+    public Tower Place(TowerDefinition definition)
     {
-        if (prefab == null)
+        if (definition == null || !definition.IsValid)
         {
-            Debug.LogError($"{name} was asked to build a null tower prefab.", this);
+            Debug.LogError($"{name} was asked to build a missing or incomplete tower definition.", this);
             return null;
         }
+
+        Tower prefab = definition.Prefab;
 
         if (IsOccupied)
         {
@@ -112,7 +119,10 @@ public class BuildNode : MonoBehaviour
         // Deliberately not parented to this node. A child inherits the pad's
         // flattened scale, which would leave every tower squashed into a tile.
         tower = Instantiate(prefab, position, transform.rotation);
-        tower.name = $"{prefab.name} ({name})";
+        tower.name = $"{definition.DisplayName} ({name})";
+
+        // Before the tower's Start runs, so it never sees itself without stats.
+        tower.Initialize(definition);
 
         RefreshColor();
         return tower;
