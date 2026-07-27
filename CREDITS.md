@@ -13,6 +13,13 @@ by [tommdraws](https://sketchfab.com/tommdraws), licensed under
 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
 Modified for this project: the face was removed.
 
+### Arrow projectile
+
+"[Arrow](https://sketchfab.com/3d-models/arrow-c46f8feb96044a95967feee111488e03)"
+by [Boy Best](https://sketchfab.com/BoyBestt), licensed under
+[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+Used unmodified.
+
 ## Textures
 
 Terrain grass and dirt textures come from Poliigon. Their license terms still
