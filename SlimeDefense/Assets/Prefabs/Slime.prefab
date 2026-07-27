@@ -10,7 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 9170384677481112812}
   - component: {fileID: 868808180947545482}
-  m_Layer: 0
+  - component: {fileID: 7382942813857594111}
+  m_Layer: 6
   m_Name: Slime
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -49,6 +50,27 @@ MonoBehaviour:
   health: 10
   arriveDistance: 0.15
   modelYawOffset: 180
+--- !u!135 &7382942813857594111
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4511660761950251939}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 1.2
+  m_Center: {x: 1.08, y: 0, z: 0}
 --- !u!1001 &1079636681135846032
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -71,47 +93,51 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8314aa13b926c1744aa3fd98186fb676, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.8483887
+      value: -0.2961532
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8314aa13b926c1744aa3fd98186fb676, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.2
+      value: 1.6535847
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8314aa13b926c1744aa3fd98186fb676, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.283
+      value: -1.4147947
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8314aa13b926c1744aa3fd98186fb676, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 0.7115819
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8314aa13b926c1744aa3fd98186fb676, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.7071068
+      value: -0.6926225
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8314aa13b926c1744aa3fd98186fb676, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0.0547619
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8314aa13b926c1744aa3fd98186fb676, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: 0.10453046
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8314aa13b926c1744aa3fd98186fb676, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: -76.974
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8314aa13b926c1744aa3fd98186fb676, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 278.81702
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8314aa13b926c1744aa3fd98186fb676, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: -274.758
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 8314aa13b926c1744aa3fd98186fb676, type: 3}
       propertyPath: m_Name
       value: Meshy_AI_Blue_Pebble_0726151259_texture
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8314aa13b926c1744aa3fd98186fb676, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -120,6 +146,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 8314aa13b926c1744aa3fd98186fb676, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4277318099678678282}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 8314aa13b926c1744aa3fd98186fb676, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8859458536524121737}
   m_SourcePrefab: {fileID: 100100000, guid: 8314aa13b926c1744aa3fd98186fb676, type: 3}
 --- !u!1 &160662866085040065 stripped
 GameObject:
@@ -142,6 +171,27 @@ MonoBehaviour:
   health: 10
   arriveDistance: 0.15
   modelYawOffset: 90
+--- !u!135 &8859458536524121737
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 160662866085040065}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 6.89
+  m_Center: {x: 0.01, y: 0.000009211713, z: -0.000009159558}
 --- !u!4 &680354336679138683 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8314aa13b926c1744aa3fd98186fb676, type: 3}
