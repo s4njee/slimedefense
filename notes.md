@@ -56,6 +56,11 @@ largest single group of it in the whole wave list, before the first wave.
 
 Phase 8 is complete.
 
+The live demo is playable in the browser here:
+<https://play.unity.com/en/games/71a052ff-c9ab-407e-a74e-bf77544a5248/slime-defense-test>
+
+![A full run with slimes and projectiles coming from the pool](screenshots/phase8_5.avif)
+
 ### 2026-07-28 04:57 -05:00 | Phase 8
 
 Phase 8 is almost complete. Three tower types with upgrade ladders and selling,
