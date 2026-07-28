@@ -105,6 +105,18 @@ public class Slime : MonoBehaviour
     public bool IsFlying => isFlying;
 
     /// <summary>
+    /// True while this slime is walking the board and can still be hit.
+    ///
+    /// Anything holding a slime across frames has to ask this rather than
+    /// checking for null. Part D's pooling parks a dead slime instead of
+    /// destroying it, so the reference stays perfectly valid — and the object
+    /// behind it may already be walking again as a different slime by the time
+    /// the holder looks. <see cref="Projectile"/> is the one that would
+    /// otherwise deliver its damage to whoever inherited the body.
+    /// </summary>
+    public bool IsInPlay => !despawning && isActiveAndEnabled;
+
+    /// <summary>
     /// Health as a fraction of what this slime started with, 0 to 1. What a
     /// health bar draws.
     /// </summary>
@@ -145,21 +157,39 @@ public class Slime : MonoBehaviour
     }
 
     /// <summary>
-    /// Assigns the route and snaps the slime to its first point. The Phase 3
-    /// spawner will call this right after instantiating a slime.
+    /// Assigns the route, snaps the slime to its first point, and counts it onto
+    /// the board. The spawner calls this right after spawning a slime.
+    ///
+    /// Registration lives here rather than in Start because Part D's pooling
+    /// took Start away: a reused slime gets no second one, and a slime that
+    /// never registers is a slime the victory check never waits for. A route is
+    /// also the honest moment to count it — before this it has nowhere to walk.
     /// </summary>
     public void SetRoute(WaypointRoute newRoute)
     {
         route = newRoute;
         targetIndex = 0;
 
-        if (route != null && route.Count > 0)
+        if (route == null || route.Count < 2)
         {
-            // Height is applied once, here. Update moves in the horizontal plane
-            // only — it copies the slime's own y onto its target every frame — so
-            // a slime that starts above the path stays there for its whole life
-            // without any of the movement code knowing that flying exists.
-            transform.position = route.GetPoint(0) + (Vector3.up * flightHeight);
+            Debug.LogError($"{name} has no usable WaypointRoute. Add the WaypointRoute component to the Path object.", this);
+            enabled = false;
+            return;
+        }
+
+        // Height is applied once, here. Update moves in the horizontal plane
+        // only — it copies the slime's own y onto its target every frame — so
+        // a slime that starts above the path stays there for its whole life
+        // without any of the movement code knowing that flying exists.
+        transform.position = route.GetPoint(0) + (Vector3.up * flightHeight);
+
+        // Counted only once the slime is actually going to walk. One that failed
+        // the check above never moves and never despawns, and registering it
+        // would leave a phantom on the board that victory waits forever on.
+        if (!registered && GameManager.Instance != null)
+        {
+            GameManager.Instance.RegisterSlime();
+            registered = true;
         }
     }
 
@@ -216,28 +246,49 @@ public class Slime : MonoBehaviour
         }
     }
 
+    // Everything that has to be true at the start of a life, rather than once
+    // per object. A pooled slime is deactivated and reactivated rather than
+    // destroyed and recreated, so Awake and Start run exactly once however many
+    // waves it walks in — and a slime that came back with the health it died at
+    // would be killed by the first shot of its next life.
+    //
+    // Written so that the very first life runs it too. The values below are what
+    // a fresh prefab already holds, so this costs one redundant assignment each
+    // and removes the question of which path set what.
+    void OnEnable()
+    {
+        health = maxHealth;
+        registered = false;
+        despawning = false;
+        targetIndex = 0;
+
+        // A slime slowed or staggered when it died must not come back still
+        // limping. These are all deadlines rather than durations, so clearing
+        // them to zero is the same as saying "expired".
+        slowFactor = 1f;
+        slowUntil = 0f;
+        staggerUntil = 0f;
+        flashUntil = 0f;
+
+        if (aimRenderer != null && normalSpriteMaterial != null)
+        {
+            aimRenderer.sharedMaterial = normalSpriteMaterial;
+        }
+
+        // Raised even though nothing has changed yet, because a health bar
+        // subscribing in its own OnEnable has no way to know which of the two
+        // ran first. Announcing the reset means the bar is correct either way:
+        // it either receives this, or reads the reset value when it subscribes.
+        HealthChanged?.Invoke(HealthNormalized);
+    }
+
     void Start()
     {
         // Lets a slime dragged into the scene by hand find the route on its own.
+        // A spawned one already has one by now, so this never fires for it.
         if (route == null)
         {
             SetRoute(FindFirstObjectByType<WaypointRoute>());
-        }
-
-        if (route == null || route.Count < 2)
-        {
-            Debug.LogError($"{name} has no usable WaypointRoute. Add the WaypointRoute component to the Path object.", this);
-            enabled = false;
-            return;
-        }
-
-        // Counted only once the slime is actually going to walk. A slime that
-        // failed the check above never moves and never despawns, and registering
-        // it would leave a phantom on the board that victory waits forever on.
-        if (GameManager.Instance != null)
-        {
-            GameManager.Instance.RegisterSlime();
-            registered = true;
         }
     }
 
@@ -390,13 +441,13 @@ public class Slime : MonoBehaviour
     // deliberate because Phase 6 would split them. This is the split: one pays
     // the player, the other charges them.
     //
-    // Neither belongs in OnDestroy, which is the tempting shortcut since every
-    // outcome destroys the slime. OnDestroy also fires when the scene unloads and
-    // when Play mode stops, so leaving Play mid-wave would pay out for every
-    // slime still walking, into a manager that may already be gone. Death is a
-    // game event; destruction is a memory event. They coincide today and stop
-    // coinciding in Phase 8, when pooled slimes are returned rather than
-    // destroyed.
+    // Neither belongs in OnDestroy, which was the tempting shortcut back when
+    // every outcome destroyed the slime. OnDestroy also fires when the scene
+    // unloads and when Play mode stops, so leaving Play mid-wave would pay out
+    // for every slime still walking, into a manager that may already be gone.
+    // Death is a game event; destruction is a memory event. Part D is where they
+    // stop coinciding entirely: a slime that dies is now parked and handed out
+    // again, and may never be destroyed at all.
 
     void Die()
     {
@@ -423,7 +474,7 @@ public class Slime : MonoBehaviour
         }
 
         // Phase 9 will spawn a death effect here.
-        Destroy(gameObject);
+        ObjectPool.Despawn(gameObject);
     }
 
     void ReachGoal()
@@ -449,7 +500,7 @@ public class Slime : MonoBehaviour
 
         Unregister();
 
-        Destroy(gameObject);
+        ObjectPool.Despawn(gameObject);
     }
 
     void Unregister()

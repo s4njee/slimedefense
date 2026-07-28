@@ -34,6 +34,10 @@ on.
 
 ## Running it
 
+**[Play the current build in your browser](https://play.unity.com/en/games/71a052ff-c9ab-407e-a74e-bf77544a5248/slime-defense-test)** — no Unity install needed.
+
+To run it from source:
+
 1. Open Unity Hub → **Add** → select the `SlimeDefense/` folder (not the repo
    root).
 2. Open the only scene, `Assets/Scenes/Main.unity`.
