@@ -8,6 +8,62 @@ section.
 
 ## Notes
 
+### 2026-07-27 21:18 -05:00 | Phase 8C
+
+Multiple mobs have been added. There are three slime types now — the baseline, a
+fast fragile runner, and a slow armoured one worth killing — and a wave is a list
+of groups rather than one prefab on a timer.
+
+`Slime.cs` gained a damage multiplier, a flying flag, and a flight height.
+`WaveDefinition.cs` became a list of `WaveGroup`s, each with its own prefab,
+count, spacing, and lead-in delay, and `WaveSpawner.RunWave` gained an outer loop
+over them. Phase 3 predicted that change and said the inner per-slime loop would
+survive it largely intact; it did, untouched below the group check. That is what
+the wave data having been a ScriptableObject from the start bought.
+
+The rule the part turns on, and it is answered differently in each direction:
+**enemies vary by value, so they are three prefabs of one class; towers vary by
+behaviour, so they are subclasses.** A runner that is only different numbers does
+not need a `SlimeRunner` class, and a class whose entire content is different
+numbers cannot be tuned without recompiling.
+
+Armour is one line — `health -= amount * damageMultiplier` — and Phase 5 predicted
+it exactly when it argued that damage was the slime's business to interpret.
+`Projectile`, `Tower`, `SplashTower`, and `FrostTower` all needed no change
+whatsoever to support an armoured enemy.
+
+Flying is data on both sides: a flag on the slime, a `Can Hit Flying` flag on the
+tower definition, and a skip during target selection rather than at fire time, so
+a ground-only tower keeps shooting whatever else is in range instead of standing
+idle under a flyer. Height is applied once when the route is assigned — movement
+copies the slime's own y onto its target every frame, so a slime that starts above
+the path stays there and no movement code knows flying exists.
+
+Making the variants turned up four failures, three of them silent:
+
+- The duplicated prefabs' sprite children came back on the Default layer. The
+  enabled collider lives on that child, the towers' detection mask is the Slime
+  layer only, so the new mobs were not ignored by the towers — they were invisible
+  to them.
+- The sprite animation binds to `m_Sprite` with an empty path, meaning the
+  renderer on the Animator's *own* object. A variant with the Animator on its root
+  animates nothing, because the root has no renderer.
+- All three sheets are sliced identically at 73 frames, so the fix is one clip per
+  colour behind a shared state machine — an Animator Override Controller each,
+  rather than three copies of the controller. Assigning one of those overrides to
+  the root Animator instead of the sprite child gives an animated slime in the
+  wrong colour, which is what happened to the green one.
+- Every slime still carries a second Animator on its root that cannot drive
+  anything. It is what made the mix-up above possible: two slots, one of which
+  does nothing.
+
+Still open: the armoured slime's damage multiplier is at 1, so its armour is not
+doing anything yet, and the slime colliders are still non-triggers at roughly four
+world units against a tower range of six. Part D — object pooling — is what
+remains of Phase 8.
+
+![Three slime types walking the route](screenshots/phase8_3.avif)
+
 ### 2026-07-27 19:09 -05:00 | Phase 8B
 
 Basic tower upgrades are implemented. A placed tower can be selected, upgraded
