@@ -38,6 +38,17 @@ public class EndOfRunPanel : MonoBehaviour
     void Awake()
     {
         group = GetComponent<CanvasGroup>();
+
+        if (restartButton != null && restartButton.image != null)
+        {
+            restartButton.image.raycastTarget = true;
+        }
+
+        if (resultLabel != null)
+        {
+            resultLabel.raycastTarget = false;
+        }
+
         SetVisible(false);
     }
 

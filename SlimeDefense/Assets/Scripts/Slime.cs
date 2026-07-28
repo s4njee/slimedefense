@@ -47,9 +47,24 @@ public class Slime : MonoBehaviour
              "so it needs 180 here to walk face-first instead of backwards.")]
     [SerializeField] float modelYawOffset = -180f;
 
+    [Header("Hit Reaction")]
+    [Tooltip("Seconds the animated sprite is replaced by a solid white silhouette after damage.")]
+    [Min(0f)] [SerializeField] float hitFlashDuration = 0.08f;
+
+    [Tooltip("World-space distance pushed opposite the route direction on each non-lethal hit.")]
+    [Min(0f)] [SerializeField] float staggerDistance = 0.45f;
+
+    [Tooltip("Seconds spent moving backward before normal route movement resumes.")]
+    [Min(0.01f)] [SerializeField] float staggerDuration = 0.12f;
+
     WaypointRoute route;
     int targetIndex;
     SpriteRenderer aimRenderer;
+    Material normalSpriteMaterial;
+    Material whiteFlashMaterial;
+    float flashUntil;
+    float staggerUntil;
+    Vector3 staggerDirection;
 
     // Speed multiplier from frost towers, and when it expires. Applied as a
     // multiplier at movement time rather than by writing to `speed`, so there is
@@ -88,6 +103,20 @@ public class Slime : MonoBehaviour
     /// True when only towers that can hit flyers may target this slime.
     /// </summary>
     public bool IsFlying => isFlying;
+
+    /// <summary>
+    /// Health as a fraction of what this slime started with, 0 to 1. What a
+    /// health bar draws.
+    /// </summary>
+    public float HealthNormalized => maxHealth > 0f ? Mathf.Clamp01(health / maxHealth) : 0f;
+
+    /// <summary>
+    /// Raised with the new fraction whenever this slime's health changes, so a
+    /// bar redraws on damage rather than every frame. Same reasoning as the
+    /// Phase 6 money and lives events: a value that moves a handful of times a
+    /// life should not be polled sixty times a second by everything watching it.
+    /// </summary>
+    public event System.Action<float> HealthChanged;
 
     /// <summary>
     /// How far along the route this slime is, as its waypoint index minus a
@@ -134,8 +163,14 @@ public class Slime : MonoBehaviour
         }
     }
 
+    // What this slime started with, captured before anything can subtract from
+    // it. Part D's pooling resets health to this rather than to a literal.
+    float maxHealth;
+
     void Awake()
     {
+        maxHealth = health;
+
         // Prefer the SpriteRenderer that owns the sprite Animator. This avoids
         // accidentally selecting an unused sprite child left in the prefab.
         SpriteRenderer[] renderers = GetComponentsInChildren<SpriteRenderer>();
@@ -158,6 +193,25 @@ public class Slime : MonoBehaviour
                     aimRenderer = candidate;
                     break;
                 }
+            }
+        }
+
+        if (aimRenderer != null)
+        {
+            normalSpriteMaterial = aimRenderer.sharedMaterial;
+            Shader flashShader = Shader.Find("SlimeDefense/Sprite White Flash");
+
+            if (flashShader != null)
+            {
+                whiteFlashMaterial = new Material(flashShader)
+                {
+                    name = "Slime White Flash (Runtime)",
+                    hideFlags = HideFlags.DontSave
+                };
+            }
+            else
+            {
+                Debug.LogWarning("Slime hit-flash shader was not found; knockback will still work.", this);
             }
         }
     }
@@ -210,9 +264,22 @@ public class Slime : MonoBehaviour
 
     void Update()
     {
+        if (aimRenderer != null && whiteFlashMaterial != null &&
+            Time.time >= flashUntil && aimRenderer.sharedMaterial == whiteFlashMaterial)
+        {
+            aimRenderer.sharedMaterial = normalSpriteMaterial;
+        }
+
         if (Time.time >= slowUntil)
         {
             slowFactor = 1f;
+        }
+
+        if (Time.time < staggerUntil)
+        {
+            float knockbackSpeed = staggerDistance / Mathf.Max(0.01f, staggerDuration);
+            transform.position += staggerDirection * knockbackSpeed * Time.deltaTime;
+            return;
         }
 
         Vector3 target = route.GetPoint(targetIndex);
@@ -265,9 +332,57 @@ public class Slime : MonoBehaviour
         // any tower type needed a line changed to support it.
         health -= amount * damageMultiplier;
 
+        HealthChanged?.Invoke(HealthNormalized);
+
         if (health <= 0f)
         {
             Die();
+            return;
+        }
+
+
+        PlayHitReaction();
+    }
+
+    void PlayHitReaction()
+    {
+        if (aimRenderer != null && whiteFlashMaterial != null && hitFlashDuration > 0f)
+        {
+            aimRenderer.sharedMaterial = whiteFlashMaterial;
+            flashUntil = Time.time + hitFlashDuration;
+        }
+
+        if (route == null || route.Count == 0 || staggerDistance <= 0f)
+        {
+            return;
+        }
+
+        Vector3 forward = route.GetPoint(targetIndex) - transform.position;
+        forward.y = 0f;
+
+        if (forward.sqrMagnitude < 0.0001f && targetIndex + 1 < route.Count)
+        {
+            forward = route.GetPoint(targetIndex + 1) - transform.position;
+            forward.y = 0f;
+        }
+        else if (forward.sqrMagnitude < 0.0001f && targetIndex > 0)
+        {
+            forward = route.GetPoint(targetIndex) - route.GetPoint(targetIndex - 1);
+            forward.y = 0f;
+        }
+
+        if (forward.sqrMagnitude > 0.0001f)
+        {
+            staggerDirection = -forward.normalized;
+            staggerUntil = Time.time + staggerDuration;
+        }
+    }
+
+    void OnDestroy()
+    {
+        if (whiteFlashMaterial != null)
+        {
+            Destroy(whiteFlashMaterial);
         }
     }
 

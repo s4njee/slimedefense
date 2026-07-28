@@ -45,6 +45,19 @@ public class BuildNode : MonoBehaviour
     /// <summary>The tower standing here, or null. Phase 8 upgrades and sells it.</summary>
     public Tower Tower => tower;
 
+    /// <summary>
+    /// Where a tower built here would stand.
+    ///
+    /// Exposed so the hover preview and the real placement read the same value
+    /// rather than each computing it. A ghost that appears anywhere other than
+    /// where the tower lands is worse than no ghost at all.
+    ///
+    /// Rotation without scale: the pad is scaled to something like
+    /// 0.9 x 0.05 x 0.9, so TransformPoint would squash the offset by the same
+    /// amounts and put the tower somewhere unintended.
+    /// </summary>
+    public Vector3 TowerPosition => transform.position + (transform.rotation * towerOffset);
+
     void Awake()
     {
         padRenderer = GetComponentInChildren<Renderer>();
@@ -111,10 +124,7 @@ public class BuildNode : MonoBehaviour
             return null;
         }
 
-        // Rotation without scale. The pad is scaled to something like
-        // 0.9 x 0.05 x 0.9, so TransformPoint would squash the offset by the
-        // same amounts and put the tower somewhere unintended.
-        Vector3 position = transform.position + (transform.rotation * towerOffset);
+        Vector3 position = TowerPosition;
 
         // Deliberately not parented to this node. A child inherits the pad's
         // flattened scale, which would leave every tower squashed into a tile.
@@ -123,6 +133,7 @@ public class BuildNode : MonoBehaviour
 
         // Before the tower's Start runs, so it never sees itself without stats.
         tower.Initialize(definition);
+        tower.AssignBuildNode(this);
 
         RefreshColor();
         return tower;

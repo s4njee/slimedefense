@@ -19,14 +19,18 @@ MonoBehaviour:
     Range: 7
     Damage: 2
     FireRate: 0.7
+    Model: {fileID: 0}
   - Cost: 110
     Range: 7.5
     Damage: 3.5
     FireRate: 0.8
+    Model: {fileID: 1320153662563332469, guid: a6958ff4d00790243a5be6a84de75894, type: 3}
   - Cost: 180
     Range: 8.5
     Damage: 5
     FireRate: 0.9
+    Model: {fileID: 4716899690271653635, guid: 22764067b26ef264d91dcbaccf3fe497, type: 3}
   sellRefund: 0.7
   projectilePrefab: {fileID: 240806475811143252, guid: 7b2778915bb7153498f8499312ba5c87, type: 3}
   targeting: 0
+  canHitFlying: 1

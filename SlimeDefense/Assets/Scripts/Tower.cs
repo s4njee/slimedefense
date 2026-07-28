@@ -61,8 +61,14 @@ public class Tower : MonoBehaviour
     // longer obviously enough.
     readonly Collider[] hits = new Collider[64];
 
+    BuildNode buildNode;
+    BoxCollider selectionCollider;
+
     /// <summary>The stats this tower is running on.</summary>
     public TowerDefinition Definition => definition;
+
+    /// <summary>The build pad that owns this tower, used by click selection.</summary>
+    public BuildNode BuildNode => buildNode;
 
     /// <summary>
     /// Which rung of the definition's ladder this tower is on. Zero is as built.
@@ -128,6 +134,17 @@ public class Tower : MonoBehaviour
     }
 
     /// <summary>
+    /// Links a runtime tower back to its pad and creates a selection-only hitbox
+    /// around the visible model. Tower art does not need gameplay colliders just
+    /// to be clickable.
+    /// </summary>
+    public void AssignBuildNode(BuildNode node)
+    {
+        buildNode = node;
+        RefreshSelectionCollider();
+    }
+
+    /// <summary>
     /// Advances this tower one rung and records what it cost. Returns false when
     /// it is already at the top.
     ///
@@ -184,6 +201,21 @@ public class Tower : MonoBehaviour
         // offset from world space, and buries or floats the model instead.
         modelInstance = Instantiate(prefab, modelRoot, false);
 
+        // Keep the height, discard the rest. A model prefab's local Y is
+        // meaningful — it is where the mesh's base sits relative to its pivot,
+        // and every Meshy model pivots about its centre rather than its feet. Its
+        // X and Z never are: a prefab made by dragging an object out of a scene
+        // stores that object's scene coordinates, and worldPositionStays: false
+        // faithfully applies them as an offset, putting the model a thousand
+        // units from the tower that owns it.
+        //
+        // Towers themselves never hit this because BuildNode.Place instantiates
+        // them with an explicit world position, which discards the prefab's
+        // transform outright. Only models go through the parenting overload, so
+        // only models need this.
+        Vector3 local = modelInstance.transform.localPosition;
+        modelInstance.transform.localPosition = new Vector3(0f, local.y, 0f);
+
         // Hide anything authored into the prefab under the model root. A tower
         // that ships with a model baked in should stop showing it the moment a
         // level supplies one of its own — otherwise the first upgrade leaves two
@@ -201,6 +233,47 @@ public class Tower : MonoBehaviour
         }
 
         AdoptFirePoint();
+        RefreshSelectionCollider();
+    }
+
+    void RefreshSelectionCollider()
+    {
+        if (buildNode == null)
+        {
+            return;
+        }
+
+        if (selectionCollider == null)
+        {
+            GameObject hitbox = new GameObject("Tower Selection Hitbox");
+            hitbox.layer = buildNode.gameObject.layer;
+            hitbox.transform.SetParent(transform, false);
+            selectionCollider = hitbox.AddComponent<BoxCollider>();
+            selectionCollider.isTrigger = true;
+        }
+
+        Renderer[] renderers = GetComponentsInChildren<Renderer>(true);
+
+        if (renderers.Length == 0)
+        {
+            selectionCollider.center = new Vector3(0f, 1f, 0f);
+            selectionCollider.size = new Vector3(1.5f, 2f, 1.5f);
+            return;
+        }
+
+        Bounds bounds = renderers[0].bounds;
+
+        for (int i = 1; i < renderers.Length; i++)
+        {
+            bounds.Encapsulate(renderers[i].bounds);
+        }
+
+        Vector3 scale = transform.lossyScale;
+        selectionCollider.center = transform.InverseTransformPoint(bounds.center);
+        selectionCollider.size = new Vector3(
+            bounds.size.x / Mathf.Max(0.001f, Mathf.Abs(scale.x)),
+            bounds.size.y / Mathf.Max(0.001f, Mathf.Abs(scale.y)),
+            bounds.size.z / Mathf.Max(0.001f, Mathf.Abs(scale.z)));
     }
 
     // Lets a model carry its own muzzle, so a taller upgrade fires from its own

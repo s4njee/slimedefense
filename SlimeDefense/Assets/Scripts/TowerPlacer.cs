@@ -34,12 +34,28 @@ public class TowerPlacer : MonoBehaviour
     [Min(1f)]
     [SerializeField] float maxRayDistance = 500f;
 
+    [Tooltip("Transparent material the hover preview is drawn in when the tower can be built. " +
+             "Leave empty to turn the preview off entirely.")]
+    [SerializeField] Material previewMaterial;
+
+    [Tooltip("Material used instead when the node is occupied or the tower is unaffordable. " +
+             "Leave empty to show the normal preview material in those cases too.")]
+    [SerializeField] Material previewBlockedMaterial;
+
     // The node under the pointer, or null. Held between frames so the highlight
     // can be cleared from the node the pointer just left.
     BuildNode hovered;
 
     // Whether the pointer was over the HUD when the hover was last updated.
     bool pointerOverUi;
+
+    // The translucent stand-in shown on the hovered node, the definition it was
+    // built from, and its renderers cached so the tint can change without walking
+    // the hierarchy every frame.
+    GameObject ghost;
+    TowerDefinition ghostDefinition;
+    Renderer[] ghostRenderers = new Renderer[0];
+    Material ghostMaterial;
 
     /// <summary>
     /// The tower type the next click will build. Set by
@@ -237,6 +253,148 @@ public class TowerPlacer : MonoBehaviour
         // behind — a bug that only ever shows up on the device.
         UpdateHover();
         HandlePress();
+        UpdateGhost();
+    }
+
+    // Shows a translucent stand-in for the tower that would be built on the
+    // hovered node, tinted by whether it actually could be.
+    //
+    // Run after the press rather than before it, so the frame a tower is built
+    // the ghost is already looking at a node that reports itself occupied — and
+    // turns to the blocked tint instead of sitting inside the tower that just
+    // appeared.
+    void UpdateGhost()
+    {
+        bool wanted = previewMaterial != null
+                      && hovered != null
+                      && Selected != null
+                      && Selected.IsValid
+                      && Selected.Prefab != null
+                      && GameManager.Instance != null
+                      && !GameManager.Instance.IsGameOver;
+
+        if (!wanted)
+        {
+            DestroyGhost();
+            return;
+        }
+
+        if (ghost == null || ghostDefinition != Selected)
+        {
+            DestroyGhost();
+            BuildGhost(Selected);
+        }
+
+        if (ghost == null)
+        {
+            return;
+        }
+
+        // Read from the node rather than recomputed here, so the ghost stands
+        // exactly where BuildNode.Place would put the real thing.
+        ghost.transform.SetPositionAndRotation(hovered.TowerPosition, hovered.transform.rotation);
+
+        bool buildable = !hovered.IsOccupied && GameManager.Instance.CanAfford(Selected.Cost);
+        Material wanted_material = buildable || previewBlockedMaterial == null
+            ? previewMaterial
+            : previewBlockedMaterial;
+
+        if (wanted_material == ghostMaterial)
+        {
+            return;
+        }
+
+        ghostMaterial = wanted_material;
+
+        foreach (Renderer renderer in ghostRenderers)
+        {
+            if (renderer == null)
+            {
+                continue;
+            }
+
+            Material[] materials = new Material[renderer.sharedMaterials.Length];
+
+            for (int i = 0; i < materials.Length; i++)
+            {
+                materials[i] = ghostMaterial;
+            }
+
+            renderer.sharedMaterials = materials;
+        }
+    }
+
+    void BuildGhost(TowerDefinition definition)
+    {
+        ghost = Instantiate(definition.Prefab.gameObject);
+        ghost.name = $"{definition.DisplayName} (preview)";
+        ghostDefinition = definition;
+        ghostMaterial = null;
+
+        // Disabled rather than destroyed. Unity does not call Start on a disabled
+        // behaviour, so switching everything off is enough to stop the ghost
+        // shooting, logging that it has no definition, or being found by a
+        // physics query — and Destroy is deferred to the end of the frame, which
+        // would leave those components alive and running for the rest of it.
+        foreach (MonoBehaviour behaviour in ghost.GetComponentsInChildren<MonoBehaviour>(true))
+        {
+            behaviour.enabled = false;
+        }
+
+        foreach (Collider collider in ghost.GetComponentsInChildren<Collider>(true))
+        {
+            collider.enabled = false;
+        }
+
+        ghostRenderers = ghost.GetComponentsInChildren<Renderer>(true);
+
+        // A tower whose model comes from its level rather than its prefab has no
+        // renderers of its own, because the disabled Tower never ran RefreshModel.
+        // Mounting level 0's model by hand is what stops the preview being an
+        // invisible object standing on the node.
+        if (ghostRenderers.Length == 0)
+        {
+            TowerLevel level = definition.GetLevel(0);
+
+            if (level != null && level.Model != null)
+            {
+                GameObject model = Instantiate(level.Model, ghost.transform, false);
+
+                foreach (MonoBehaviour behaviour in model.GetComponentsInChildren<MonoBehaviour>(true))
+                {
+                    behaviour.enabled = false;
+                }
+
+                ghostRenderers = ghost.GetComponentsInChildren<Renderer>(true);
+            }
+        }
+
+        // Shadows from a thing that does not exist yet read as a bug.
+        foreach (Renderer renderer in ghostRenderers)
+        {
+            renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            renderer.receiveShadows = false;
+        }
+    }
+
+    void DestroyGhost()
+    {
+        if (ghost != null)
+        {
+            Destroy(ghost);
+        }
+
+        ghost = null;
+        ghostDefinition = null;
+        ghostRenderers = new Renderer[0];
+        ghostMaterial = null;
+    }
+
+    void OnDisable()
+    {
+        // Otherwise a placer switched off mid-hover leaves a translucent tower
+        // standing on the map with nothing left to clean it up.
+        DestroyGhost();
     }
 
     // Finds the node under the pointer and moves the highlight to it.
@@ -267,13 +425,16 @@ public class TowerPlacer : MonoBehaviour
             Vector2 screenPoint = Pointer.current.position.ReadValue();
             Ray ray = placementCamera.ScreenPointToRay(screenPoint);
 
-            if (Physics.Raycast(ray, out RaycastHit hit, maxRayDistance, buildNodeMask))
+            if (Physics.Raycast(ray, out RaycastHit hit, maxRayDistance, buildNodeMask,
+                                QueryTriggerInteraction.Collide))
             {
-                // GetComponentInParent, not GetComponent: the ray hits a
-                // collider, and the day a node gets a nicer model with the
-                // collider on a child, GetComponent returns null and clicks stop
-                // registering for no visible reason.
-                found = hit.collider.GetComponentInParent<BuildNode>();
+                // Selection hitboxes live on the same layer as pads but belong
+                // to the unparented tower, so resolve the tower first and follow
+                // its explicit link back to the node.
+                Tower hitTower = hit.collider.GetComponentInParent<Tower>();
+                found = hitTower != null
+                    ? hitTower.BuildNode
+                    : hit.collider.GetComponentInParent<BuildNode>();
             }
         }
 
@@ -380,5 +541,6 @@ public class TowerPlacer : MonoBehaviour
         }
 
         GameManager.Instance.TrySpend(price);
+        SelectTower(hovered);
     }
 }

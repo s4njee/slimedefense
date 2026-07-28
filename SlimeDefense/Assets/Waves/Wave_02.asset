@@ -13,8 +13,12 @@ MonoBehaviour:
   m_Name: Wave_02
   m_EditorClassIdentifier: Assembly-CSharp::WaveDefinition
   groups:
-  - SlimePrefab: {fileID: 868808180947545482, guid: e18be48024d12c44c8071eb0662177d2, type: 3}
+  - SlimePrefab: {fileID: 72975371497174378, guid: 9e9ec4c52c36527488db5a1a63ae2550, type: 3}
     Count: 8
     Spacing: 1
     DelayBeforeGroup: 0
+  - SlimePrefab: {fileID: 4238859763098833269, guid: 78ea719adbd7ad64783dbe09068f8770, type: 3}
+    Count: 15
+    Spacing: 1
+    DelayBeforeGroup: 3
   delayBeforeWave: 0

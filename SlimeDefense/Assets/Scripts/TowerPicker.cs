@@ -66,6 +66,11 @@ public class TowerPicker : MonoBehaviour
         {
             if (options[i].Button != null)
             {
+                if (options[i].Button.image != null)
+                {
+                    options[i].Button.image.raycastTarget = true;
+                }
+
                 originalTints[i] = options[i].Button.image != null
                     ? options[i].Button.image.color
                     : Color.white;
@@ -99,7 +104,12 @@ public class TowerPicker : MonoBehaviour
 
     void Subscribe()
     {
-        if (subscribed || GameManager.Instance == null)
+        if (placer == null)
+        {
+            placer = FindAnyObjectByType<TowerPlacer>();
+        }
+
+        if (subscribed || GameManager.Instance == null || placer == null)
         {
             return;
         }

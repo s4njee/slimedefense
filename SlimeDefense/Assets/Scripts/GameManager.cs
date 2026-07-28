@@ -57,6 +57,9 @@ public class GameManager : MonoBehaviour
     /// <summary>Lives remaining. Zero means the run is over.</summary>
     public int Lives { get; private set; }
 
+    /// <summary>The number of lives a fresh run begins with.</summary>
+    public int MaxLives => startingLives;
+
     /// <summary>True once lives have run out. Systems check this to stand down.</summary>
     public bool IsGameOver { get; private set; }
 

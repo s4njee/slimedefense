@@ -3,35 +3,33 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// Draws the run's state: money, lives, and which wave is running. One listener
-/// holding three labels rather than a script per label — three subscriptions with
-/// three lifetimes to get right is more machinery for the same three strings.
-///
-/// Nothing here runs in Update. Every label is written when the value behind it
-/// changes and left alone in between, which is what the events added in Phase 6
-/// were for. Polling would re-tessellate a text mesh sixty times a second to show
-/// a number that moves twice a wave.
-///
-/// Attach this to an empty child of the Canvas and assign the labels.
+/// Event-driven in-game HUD for money, lives, wave count, and the one-shot
+/// start-game action. Presentation lives in the scene; this component only
+/// translates game state into labels and life indicators.
 /// </summary>
 public class Hud : MonoBehaviour
 {
-    [Tooltip("Shows the current balance.")]
+    [Header("Values")]
     [SerializeField] TMP_Text moneyLabel;
-
-    [Tooltip("Shows lives remaining.")]
     [SerializeField] TMP_Text livesLabel;
-
-    [Tooltip("Shows how far through the wave list the run is.")]
     [SerializeField] TMP_Text waveLabel;
+    [SerializeField] TMP_Text waveTotalLabel;
 
-    [Tooltip("The Start Wave button. Its click is wired here in code rather than through the " +
-             "Inspector's On Click list, and it is hidden once the run is underway — StartWaves " +
-             "plays the whole list, so there is nothing left to press it for.")]
+    [Header("Lives")]
+    [Tooltip("Container for individual pips. Hidden when max lives is greater than eight.")]
+    [SerializeField] GameObject lifePipsRoot;
+    [SerializeField] Image[] lifePips;
+    [Tooltip("Compact icon used instead of pips for large life counts.")]
+    [SerializeField] GameObject lifeIcon;
+
+    [Header("Start")]
     [SerializeField] Button startWaveButton;
+    [SerializeField] TMP_Text startWaveLabel;
 
     [Tooltip("The spawner the wave label reads from. Leave empty to find the one in the scene.")]
     [SerializeField] WaveSpawner spawner;
+
+    bool subscribed;
 
     void Awake()
     {
@@ -39,26 +37,20 @@ public class Hud : MonoBehaviour
         {
             spawner = FindAnyObjectByType<WaveSpawner>();
         }
+
+        if (startWaveLabel != null)
+        {
+            startWaveLabel.text = "START GAME";
+        }
+
+        if (startWaveButton != null && startWaveButton.image != null)
+        {
+            startWaveButton.image.raycastTarget = true;
+        }
     }
 
-    // True while this HUD is attached to the manager's events, so subscribing
-    // twice is impossible and unsubscribing without a subscription is a no-op.
-    bool subscribed;
-
-    // Subscription is attempted from both OnEnable and Start, and that is not
-    // belt-and-braces — it is the fix for a real ordering bug.
-    //
-    // OnEnable/OnDisable is the right pairing for UI, which gets toggled: a
-    // hidden panel should not react to events. But OnEnable can run before the
-    // GameManager's Awake, and then Instance is null. Guarding the null and
-    // moving on — which is what this script used to do — means the HUD silently
-    // never subscribes, and the labels sit on whatever text they were given in
-    // the editor for the whole run. Money reading "Money: 100" and never moving
-    // is exactly what that looks like.
-    //
-    // Start is guaranteed to run after every Awake in the scene, so the second
-    // attempt always finds the manager. Whichever call gets there first wins and
-    // the other does nothing.
+    // OnEnable can run before GameManager.Awake. Start is the guaranteed second
+    // attempt, and the guard keeps the subscription single.
     void OnEnable()
     {
         Subscribe();
@@ -82,14 +74,9 @@ public class Hud : MonoBehaviour
         }
 
         subscribed = true;
-
         GameManager.Instance.MoneyChanged += OnMoneyChanged;
         GameManager.Instance.LivesChanged += OnLivesChanged;
 
-        // Subscribe, then seed. Events report *changes*, so a listener that
-        // arrives after the last one has missed it and would show whatever the
-        // label said in the editor until the player earns a coin. Read the
-        // current values once here and let the events cover the rest.
         OnMoneyChanged(GameManager.Instance.Money);
         OnLivesChanged(GameManager.Instance.Lives);
 
@@ -97,19 +84,11 @@ public class Hud : MonoBehaviour
         {
             spawner.WaveChanged += OnWaveChanged;
             spawner.WavesStarted += OnWavesStarted;
-
             OnWaveChanged(spawner.CurrentWave, spawner.WaveCount);
         }
 
         if (startWaveButton != null)
         {
-            // Wired in code, deliberately. The Inspector's On Click list is the
-            // more common way to do this and it has one silent failure mode:
-            // dropping the *script asset* into the object slot instead of the
-            // scene object is accepted without complaint, leaves the method name
-            // empty, and produces a button that highlights, animates, and calls
-            // nothing. A typed Button field cannot be given the wrong thing —
-            // Unity rejects the drop.
             startWaveButton.onClick.AddListener(OnStartWavePressed);
             startWaveButton.gameObject.SetActive(spawner == null || !spawner.IsRunning);
         }
@@ -146,7 +125,7 @@ public class Hud : MonoBehaviour
     {
         if (spawner == null)
         {
-            Debug.LogError($"{name} has no WaveSpawner, so the Start Wave button has nothing to start.", this);
+            Debug.LogError($"{name} has no WaveSpawner, so the start button has nothing to start.", this);
             return;
         }
 
@@ -157,7 +136,7 @@ public class Hud : MonoBehaviour
     {
         if (moneyLabel != null)
         {
-            moneyLabel.text = $"Money: {money}";
+            moneyLabel.text = money.ToString("N0");
         }
     }
 
@@ -165,7 +144,41 @@ public class Hud : MonoBehaviour
     {
         if (livesLabel != null)
         {
-            livesLabel.text = $"Lives: {lives}";
+            livesLabel.text = lives.ToString("N0");
+        }
+
+        int maxLives = GameManager.Instance != null ? GameManager.Instance.MaxLives : lives;
+        bool usePips = maxLives > 0 && maxLives <= 8 && lifePips != null && lifePips.Length > 0;
+
+        if (lifePipsRoot != null)
+        {
+            lifePipsRoot.SetActive(usePips);
+        }
+
+        if (lifeIcon != null)
+        {
+            lifeIcon.SetActive(!usePips);
+        }
+
+        if (!usePips)
+        {
+            return;
+        }
+
+        Color filled = new Color32(224, 138, 120, 255);
+        Color empty = new Color32(236, 238, 228, 36);
+
+        for (int i = 0; i < lifePips.Length; i++)
+        {
+            Image pip = lifePips[i];
+
+            if (pip == null)
+            {
+                continue;
+            }
+
+            pip.gameObject.SetActive(i < maxLives);
+            pip.color = i < lives ? filled : empty;
         }
     }
 
@@ -173,7 +186,12 @@ public class Hud : MonoBehaviour
     {
         if (waveLabel != null)
         {
-            waveLabel.text = $"Wave: {current} / {total}";
+            waveLabel.text = current.ToString("00");
+        }
+
+        if (waveTotalLabel != null)
+        {
+            waveTotalLabel.text = $"/ {total:00}";
         }
     }
 

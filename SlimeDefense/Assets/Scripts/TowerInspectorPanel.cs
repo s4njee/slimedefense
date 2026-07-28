@@ -1,47 +1,63 @@
+using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// The panel shown when a placed tower is selected: what it is, what it does at
-/// its current level, and the two things that can be done to it.
-///
-/// It owns no rules. Upgrading and selling are transactions, and every
-/// transaction in this project goes through <see cref="TowerPlacer"/>, which is
-/// where affordability is checked and money is spent. This panel asks for one and
-/// redraws itself with whatever came back — which is why it can be deleted or
-/// rebuilt without a single balance rule moving.
-///
-/// Hidden with a CanvasGroup rather than SetActive(false), for the same reason
-/// <see cref="EndOfRunPanel"/> is: a deactivated object stops running OnEnable
-/// and can never hear the event that would bring it back.
+/// Right-side tower rail shown only while a placed tower is selected. It presents
+/// comparable stats, the next linear upgrade, and a two-click sell action.
 /// </summary>
 [RequireComponent(typeof(CanvasGroup))]
 public class TowerInspectorPanel : MonoBehaviour
 {
-    [Tooltip("Tower name and level, e.g. 'Frost Tower — Level 2'.")]
-    [SerializeField] TMP_Text titleLabel;
+    [Header("States")]
+    [SerializeField] GameObject emptyState;
+    [SerializeField] GameObject selectedContent;
+    [SerializeField] GameObject panelShadow;
 
-    [Tooltip("The stats of the current level.")]
+    [Header("Identity")]
+    [SerializeField] TMP_Text titleLabel;
+    [SerializeField] TMP_Text levelLabel;
+    [SerializeField] TMP_Text portraitLabel;
+
+    [Tooltip("Optional legacy combined stats label.")]
     [SerializeField] TMP_Text statsLabel;
 
-    [Tooltip("Buys the next level. Wired in code; leave its On Click list empty.")]
+    [Header("Stats")]
+    [SerializeField] TMP_Text damageValueLabel;
+    [SerializeField] TMP_Text rangeValueLabel;
+    [SerializeField] TMP_Text fireRateValueLabel;
+    [SerializeField] Image damageFill;
+    [SerializeField] Image rangeFill;
+    [SerializeField] Image fireRateFill;
+
+    [Tooltip("Game-wide maximum used to make damage bars comparable between towers.")]
+    [Min(0.01f)] [SerializeField] float maximumDamage = 10f;
+    [Tooltip("Game-wide maximum used to make range bars comparable between towers.")]
+    [Min(0.01f)] [SerializeField] float maximumRange = 12f;
+    [Tooltip("Game-wide maximum used to make fire-rate bars comparable between towers.")]
+    [Min(0.01f)] [SerializeField] float maximumFireRate = 3.5f;
+
+    [Header("Upgrade")]
     [SerializeField] Button upgradeButton;
-
-    [Tooltip("Label on the upgrade button, so it can show the price.")]
+    [Tooltip("Optional legacy single upgrade label.")]
     [SerializeField] TMP_Text upgradeLabel;
+    [SerializeField] TMP_Text upgradeTitleLabel;
+    [SerializeField] TMP_Text upgradeEffectLabel;
+    [SerializeField] TMP_Text upgradePriceLabel;
 
-    [Tooltip("Sells the tower. Wired in code; leave its On Click list empty.")]
+    [Header("Sell")]
     [SerializeField] Button sellButton;
-
-    [Tooltip("Label on the sell button, so it can show the refund.")]
     [SerializeField] TMP_Text sellLabel;
+    [SerializeField] TMP_Text refundLabel;
 
-    [Tooltip("The placer that owns selection and transactions. Leave empty to find it.")]
     [SerializeField] TowerPlacer placer;
 
     CanvasGroup group;
     bool subscribed;
+    bool sellConfirmationArmed;
+    Coroutine sellConfirmationRoutine;
 
     void Awake()
     {
@@ -52,12 +68,19 @@ public class TowerInspectorPanel : MonoBehaviour
             placer = FindAnyObjectByType<TowerPlacer>();
         }
 
-        SetVisible(false);
+        if (upgradeButton != null && upgradeButton.image != null)
+        {
+            upgradeButton.image.raycastTarget = true;
+        }
+
+        if (sellButton != null && sellButton.image != null)
+        {
+            sellButton.image.raycastTarget = true;
+        }
+
+        SetSelectionVisible(false);
     }
 
-    // OnEnable and Start both, guarded by the flag — OnEnable can run before the
-    // GameManager's Awake, and a listener that quietly skipped subscribing would
-    // leave a panel that never opens.
     void OnEnable()
     {
         Subscribe();
@@ -75,17 +98,18 @@ public class TowerInspectorPanel : MonoBehaviour
 
     void Subscribe()
     {
+        if (placer == null)
+        {
+            placer = FindAnyObjectByType<TowerPlacer>();
+        }
+
         if (subscribed || GameManager.Instance == null || placer == null)
         {
             return;
         }
 
         subscribed = true;
-
         placer.TowerSelectionChanged += OnSelectionChanged;
-
-        // Money moving changes whether the upgrade is affordable, so the button's
-        // enabled state is event-driven exactly like the picker's.
         GameManager.Instance.MoneyChanged += OnMoneyChanged;
 
         if (upgradeButton != null)
@@ -133,13 +157,12 @@ public class TowerInspectorPanel : MonoBehaviour
 
     void OnSelectionChanged(BuildNode node)
     {
+        ResetSellConfirmation();
         Refresh();
     }
 
     void OnMoneyChanged(int money)
     {
-        // Only the affordability of the upgrade can change from money alone, but
-        // redrawing the whole panel keeps one path instead of two that drift.
         Refresh();
     }
 
@@ -149,29 +172,41 @@ public class TowerInspectorPanel : MonoBehaviour
 
         if (tower == null || tower.Definition == null)
         {
-            SetVisible(false);
+            SetSelectionVisible(false);
             return;
         }
 
-        SetVisible(true);
-
+        SetSelectionVisible(true);
         TowerLevel level = tower.CurrentLevel;
 
         if (titleLabel != null)
         {
-            titleLabel.text = $"{tower.Definition.DisplayName} — Level {tower.Level + 1}";
+            titleLabel.text = tower.Definition.DisplayName;
+        }
+
+        if (levelLabel != null)
+        {
+            levelLabel.text = $"LV {tower.Level + 1}";
+        }
+
+        if (portraitLabel != null)
+        {
+            portraitLabel.text = tower.Definition.DisplayName.ToUpperInvariant();
         }
 
         if (statsLabel != null && level != null)
         {
-            // Damage is written as a rate as well as a number, because "2 damage"
-            // and "0.7 shots per second" are not comparable across tower types by
-            // eye, and comparing them is the entire decision the player is making.
             statsLabel.text =
                 $"Range {level.Range:0.#}\n" +
                 $"Damage {level.Damage:0.#}\n" +
-                $"Rate {level.FireRate:0.##}/s\n" +
-                $"DPS {level.Damage * level.FireRate:0.#}";
+                $"Rate {level.FireRate:0.##}/s";
+        }
+
+        if (level != null)
+        {
+            SetStat(damageValueLabel, damageFill, level.Damage, maximumDamage, "0.#");
+            SetStat(rangeValueLabel, rangeFill, level.Range, maximumRange, "0.#");
+            SetStat(fireRateValueLabel, fireRateFill, level.FireRate, maximumFireRate, "0.##", "/s");
         }
 
         bool canAfford = GameManager.Instance != null
@@ -184,15 +219,85 @@ public class TowerInspectorPanel : MonoBehaviour
 
         if (upgradeLabel != null)
         {
-            // At maximum the button says so rather than showing a price of zero,
-            // which would read as a free upgrade that does nothing.
             upgradeLabel.text = tower.CanUpgrade ? $"Upgrade\n{tower.UpgradeCost}" : "Max level";
+        }
+
+        TowerLevel nextLevel = tower.CanUpgrade
+            ? tower.Definition.GetLevel(tower.Level + 1)
+            : null;
+
+        if (upgradeTitleLabel != null)
+        {
+            upgradeTitleLabel.text = tower.CanUpgrade
+                ? $"LEVEL {tower.Level + 2} UPGRADE"
+                : "MAX LEVEL";
+        }
+
+        if (upgradeEffectLabel != null)
+        {
+            upgradeEffectLabel.text = nextLevel != null
+                ? DescribeChanges(level, nextLevel)
+                : "All upgrades installed";
+        }
+
+        if (upgradePriceLabel != null)
+        {
+            upgradePriceLabel.text = tower.CanUpgrade ? tower.UpgradeCost.ToString("N0") : "-";
+            upgradePriceLabel.color = tower.CanUpgrade && !canAfford
+                ? new Color32(224, 138, 120, 255)
+                : new Color32(236, 238, 228, 255);
         }
 
         if (sellLabel != null)
         {
-            sellLabel.text = $"Sell\n+{tower.SellValue}";
+            sellLabel.text = sellConfirmationArmed ? "CONFIRM" : "SELL";
         }
+
+        if (refundLabel != null)
+        {
+            refundLabel.text = tower.SellValue.ToString("N0");
+        }
+    }
+
+    static void SetStat(TMP_Text valueLabel, Image fill, float value, float maximum,
+                        string format, string suffix = "")
+    {
+        if (valueLabel != null)
+        {
+            valueLabel.text = value.ToString(format) + suffix;
+        }
+
+        if (fill != null)
+        {
+            fill.fillAmount = Mathf.Clamp01(value / Mathf.Max(0.01f, maximum));
+        }
+    }
+
+    static string DescribeChanges(TowerLevel current, TowerLevel next)
+    {
+        if (current == null || next == null)
+        {
+            return "Stats improve";
+        }
+
+        List<string> changes = new List<string>();
+
+        if (!Mathf.Approximately(current.Damage, next.Damage))
+        {
+            changes.Add($"DMG {current.Damage:0.#} -> {next.Damage:0.#}");
+        }
+
+        if (!Mathf.Approximately(current.Range, next.Range))
+        {
+            changes.Add($"RANGE {current.Range:0.#} -> {next.Range:0.#}");
+        }
+
+        if (!Mathf.Approximately(current.FireRate, next.FireRate))
+        {
+            changes.Add($"RATE {current.FireRate:0.##} -> {next.FireRate:0.##}");
+        }
+
+        return changes.Count > 0 ? string.Join("  |  ", changes) : "Model upgrade";
     }
 
     void OnUpgradePressed()
@@ -200,31 +305,91 @@ public class TowerInspectorPanel : MonoBehaviour
         if (placer != null)
         {
             placer.TryUpgradeSelected();
+            Refresh();
         }
     }
 
     void OnSellPressed()
     {
-        if (placer != null)
-        {
-            placer.SellSelected();
-        }
-    }
-
-    void SetVisible(bool visible)
-    {
-        if (group == null)
+        if (placer == null)
         {
             return;
         }
 
-        group.alpha = visible ? 1f : 0f;
+        if (!sellConfirmationArmed)
+        {
+            sellConfirmationArmed = true;
 
-        // blocksRaycasts matters as much as alpha: an invisible panel that still
-        // swallows clicks would stop the player selecting the next tower, and the
-        // symptom — placement works until you open the panel once — is a horrible
-        // one to trace.
-        group.interactable = visible;
-        group.blocksRaycasts = visible;
+            if (sellLabel != null)
+            {
+                sellLabel.text = "CONFIRM";
+            }
+
+            if (sellConfirmationRoutine != null)
+            {
+                StopCoroutine(sellConfirmationRoutine);
+            }
+
+            sellConfirmationRoutine = StartCoroutine(CancelSellConfirmation());
+            return;
+        }
+
+        ResetSellConfirmation();
+        placer.SellSelected();
+    }
+
+    IEnumerator CancelSellConfirmation()
+    {
+        yield return new WaitForSecondsRealtime(2.5f);
+        sellConfirmationRoutine = null;
+        sellConfirmationArmed = false;
+
+        if (sellLabel != null)
+        {
+            sellLabel.text = "SELL";
+        }
+    }
+
+    void ResetSellConfirmation()
+    {
+        sellConfirmationArmed = false;
+
+        if (sellConfirmationRoutine != null)
+        {
+            StopCoroutine(sellConfirmationRoutine);
+            sellConfirmationRoutine = null;
+        }
+
+        if (sellLabel != null)
+        {
+            sellLabel.text = "SELL";
+        }
+    }
+
+    void SetSelectionVisible(bool visible)
+    {
+        if (emptyState != null)
+        {
+            emptyState.SetActive(false);
+        }
+
+        if (selectedContent != null)
+        {
+            selectedContent.SetActive(visible);
+        }
+
+        if (panelShadow != null)
+        {
+            panelShadow.SetActive(visible);
+        }
+
+        if (group != null)
+        {
+            // Keep this component enabled so it can hear the next selection
+            // event, but make the entire rail invisible and non-interactive.
+            group.alpha = visible ? 1f : 0f;
+            group.interactable = visible;
+            group.blocksRaycasts = visible;
+        }
     }
 }

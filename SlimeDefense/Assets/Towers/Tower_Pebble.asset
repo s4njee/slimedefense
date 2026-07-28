@@ -17,19 +17,20 @@ MonoBehaviour:
   levels:
   - Cost: 50
     Range: 6
-    Damage: 3
+    Damage: 6
     FireRate: 1.5
     Model: {fileID: 0}
   - Cost: 60
-    Range: 10
-    Damage: 6
+    Range: 8
+    Damage: 10
     FireRate: 3
     Model: {fileID: 878766655334963891, guid: 264a3adcc0b2f294d87bdafea27e68ee, type: 3}
   - Cost: 110
-    Range: 8
-    Damage: 8
+    Range: 10
+    Damage: 12
     FireRate: 1.8
-    Model: {fileID: 0}
+    Model: {fileID: 2147484140178703691, guid: 2f25d3c54d4f1d6499552a3988060f5a, type: 3}
   sellRefund: 0.7
   projectilePrefab: {fileID: 3757135255343294954, guid: 8144f51242aa5cc43bc0bce6a913710d, type: 3}
   targeting: 0
+  canHitFlying: 1

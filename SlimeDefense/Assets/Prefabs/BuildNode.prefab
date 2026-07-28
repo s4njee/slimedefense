@@ -127,7 +127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a24d8c1e0b34f52ba96c7d3418ef205, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BuildNode
-  availableColor: {r: 0.6, g: 0.9, b: 0.6, a: 1}
+  availableColor: {r: 0, g: 0, b: 0, a: 1}
   hoverColor: {r: 1, g: 1, b: 1, a: 1}
   occupiedColor: {r: 0.35, g: 0.35, b: 0.35, a: 1}
   towerOffset: {x: 0, y: 0, z: 0}
