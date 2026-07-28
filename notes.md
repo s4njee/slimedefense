@@ -8,6 +8,43 @@ section.
 
 ## Notes
 
+### 2026-07-28 04:57 -05:00 | Phase 8
+
+Phase 8 is almost complete. Three tower types with upgrade ladders and selling,
+three slime types, waves built from groups, and towers that change model as they
+level. Object pooling — Part D — is the only part still untouched.
+
+Some bugs remain around tower upgrades, and they are worth writing down rather
+than rediscovering:
+
+- The upgrade models for frost and splash were landing about a thousand units
+  from their towers. Not the swap failing — the swap working on a prefab whose
+  stored position was the scene coordinate it happened to be dragged from.
+  `RefreshModel` instantiates with `worldPositionStays: false` to preserve each
+  mesh's base height, and that faithfully preserved the horizontal offset too.
+  It now keeps the local Y and zeroes X and Z, because only the height was ever
+  meaningful. Four model prefabs still hold scene coordinates in their files;
+  they are simply no longer consulted.
+- Towers built through `BuildNode.Place` never had this problem, because that
+  uses the explicit-world-position overload, which discards the prefab transform
+  outright. Same numbers in the file, opposite consequences, purely from which
+  overload each path uses — worth remembering before writing a third one.
+- A baked-in model still sits on each tower prefab as a sibling of `ModelRoot`
+  rather than inside it, so `RefreshModel`'s hide pass never reaches it. Level 0
+  therefore keeps whatever the prefab ships with, which is currently the wanted
+  behaviour, but the two systems only agree by accident.
+- The frost tower cannot deepen its slow as it levels. `slowFactor` and
+  `slowDuration` live on the `FrostTower` component rather than in the level
+  rows, so upgrading widens its reach and quickens its fire and nothing else.
+
+Everything in this phase that went wrong went wrong the same way: a prefab made
+by dragging an object out of a scene keeps that scene's coordinates, and
+something later applies them as if they were an offset. It cost a misplaced
+tower, a buried tower, an arrow eleven units from its own projectile, and four
+upgrade models a kilometre off the map.
+
+![Tower upgrades swapping models](screenshots/phase8_4.avif)
+
 ### 2026-07-27 21:18 -05:00 | Phase 8C
 
 Multiple mobs have been added. There are three slime types now — the baseline, a
