@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -49,6 +50,16 @@ public class Tower : MonoBehaviour
     // muzzle marker falls back to it rather than to the previous model's.
     GameObject modelInstance;
     Transform authoredFirePoint;
+
+    // The level-one art the prefab ships with, wherever in the tower it happens
+    // to hang. Collected once in Awake, because after the first swap there is no
+    // way to tell the prefab's own model from one this script instantiated.
+    //
+    // Searching the whole tower rather than only the model root is the fix for
+    // the upgrade leaving two towers standing inside each other: nothing forces
+    // the authored model to be parented under Model Root, and in practice none
+    // of the tower prefabs parent it there.
+    readonly List<GameObject> authoredModels = new List<GameObject>();
 
     // Allocated once and reused by every query, because the non-allocating
     // overload of OverlapSphere fills a buffer instead of returning a fresh
@@ -120,8 +131,44 @@ public class Tower : MonoBehaviour
     /// </summary>
     void Awake()
     {
-        // Captured before any model swap can overwrite it.
+        // Both captured before any model swap can overwrite them.
         authoredFirePoint = firePoint;
+        CollectAuthoredModels();
+    }
+
+    // Anything under the tower that draws something, at the moment the tower is
+    // born. That is the prefab's own art and nothing else, since no level model
+    // has been instantiated yet.
+    //
+    // Direct children only, and the Model Root itself is skipped: its subtree is
+    // where instantiated models go, and anything already sitting inside it is
+    // picked up by the second pass as art in its own right.
+    void CollectAuthoredModels()
+    {
+        AddAuthoredModels(transform);
+
+        if (modelRoot != null && modelRoot != transform)
+        {
+            AddAuthoredModels(modelRoot);
+        }
+    }
+
+    void AddAuthoredModels(Transform parent)
+    {
+        foreach (Transform child in parent)
+        {
+            if (child == modelRoot)
+            {
+                continue;
+            }
+
+            // A fire point marker is an empty transform and stays; only things
+            // that render are art this tower might have to stop showing.
+            if (child.GetComponentInChildren<Renderer>(true) != null)
+            {
+                authoredModels.Add(child.gameObject);
+            }
+        }
     }
 
     public void Initialize(TowerDefinition newDefinition)
@@ -216,19 +263,19 @@ public class Tower : MonoBehaviour
         Vector3 local = modelInstance.transform.localPosition;
         modelInstance.transform.localPosition = new Vector3(0f, local.y, 0f);
 
-        // Hide anything authored into the prefab under the model root. A tower
-        // that ships with a model baked in should stop showing it the moment a
-        // level supplies one of its own — otherwise the first upgrade leaves two
-        // towers standing inside each other.
+        // Hide the art the prefab was authored with. A tower that ships with a
+        // model baked in should stop showing it the moment a level supplies one
+        // of its own — otherwise the first upgrade leaves two towers standing
+        // inside each other.
         //
         // Hidden rather than destroyed, because it belongs to the prefab rather
         // than to this script, and destroying another system's objects is a
         // habit that eventually deletes something that mattered.
-        foreach (Transform child in modelRoot)
+        foreach (GameObject authored in authoredModels)
         {
-            if (child.gameObject != modelInstance)
+            if (authored != null && authored != modelInstance)
             {
-                child.gameObject.SetActive(false);
+                authored.SetActive(false);
             }
         }
 
@@ -252,7 +299,10 @@ public class Tower : MonoBehaviour
             selectionCollider.isTrigger = true;
         }
 
-        Renderer[] renderers = GetComponentsInChildren<Renderer>(true);
+        // Active renderers only. Once an upgrade hides the level-one art, that
+        // art is still in the hierarchy, and including it would size the click
+        // target to a model the player can no longer see.
+        Renderer[] renderers = GetComponentsInChildren<Renderer>(false);
 
         if (renderers.Length == 0)
         {
