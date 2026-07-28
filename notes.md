@@ -8,6 +8,21 @@ section.
 
 ## Notes
 
+### 2026-07-28 17:55 -05:00 | Phase 9
+
+Every prefab now carries its new model. The art swap that started this morning
+is finished across the board rather than on the one or two things the last clip
+happened to show.
+
+Worth saying once, because it is the payoff for a rule the project has followed
+since Phase 1: none of this needed gameplay code. A model is a prefab's business,
+levels carry their own models as data, and the placement, targeting, and damage
+systems never learn what any of it looks like. The one thing that did have to be
+taught about models was the upgrade swap, and that was two bugs about where a
+prefab's stored coordinates come from, not about the models themselves.
+
+![All prefabs running on their new models](screenshots/phase9_2.avif)
+
 ### 2026-07-28 12:55 -05:00 | Phase 9
 
 Phase 9 has started, and the polish is going in art first: brand new Meshy
