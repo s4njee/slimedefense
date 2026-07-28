@@ -524,7 +524,11 @@ public class Tower : MonoBehaviour
     {
         Vector3 origin = firePoint != null ? firePoint.position : transform.position;
 
-        Projectile projectile = Instantiate(definition.ProjectilePrefab, origin, Quaternion.identity);
+        // Pooled rather than instantiated since Part D. A dozen towers each
+        // firing once a second is a GameObject built and thrown away every few
+        // frames for the length of a run, which is the single biggest source of
+        // per-frame garbage this game has.
+        Projectile projectile = ObjectPool.Spawn(definition.ProjectilePrefab, origin, Quaternion.identity);
         projectile.Launch(target, this);
     }
 

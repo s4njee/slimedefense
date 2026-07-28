@@ -8,6 +8,54 @@ section.
 
 ## Notes
 
+### 2026-07-28 08:35 -05:00 | Phase 8D
+
+Object pooling is in, which was the last untouched part of Phase 8. Slimes and
+projectiles are now reused rather than created and destroyed —
+`Assets/Scripts/ObjectPool.cs` hands out copies keyed by prefab, and
+`PooledInstance.cs` is the receipt stamped on each copy saying where it came
+from. Towers deliberately stay on Instantiate and Destroy: a handful exist, they
+are built and sold by hand, and pooling them would buy nothing while adding a
+reset path to get wrong.
+
+No editor work this time. The pool creates itself on first use, because one that
+had to be dragged into the scene is one that goes missing and silently turns
+every spawn back into an Instantiate.
+
+The rule the part turns on: **a pooled object is deactivated, not destroyed**,
+so `Awake` and `Start` run once in the object's entire lifetime while `OnEnable`
+and `OnDisable` run once per life. Everything that has to be true at the start of
+a life belongs in `OnEnable`. Two files were already written to that rule and
+needed nothing — `HealthBar` had been on `OnEnable`/`OnDisable` since Part C
+precisely for this, and `Slime`'s slow was a multiplier applied at movement time
+rather than a written-over `speed`, so there was no original value to restore.
+
+Three things did need moving, and each one is a trap that would have looked like
+a different bug:
+
+- **Registration.** `Slime` counted itself onto the board in `Start`, which a
+  reused slime never gets. It now registers in `SetRoute`, which is the honest
+  moment anyway: before it has a route it has nowhere to walk. Left in `Start`,
+  every slime after the first would have been invisible to the victory check.
+- **A projectile's lifetime.** It was a `Destroy(gameObject, lifetime)` scheduled
+  in `Start`. On a pooled shot that fires once and then hundreds of times, the
+  single scheduled destroy lands three seconds into the *first* flight — most
+  likely while the object is airborne on its fifth. It is now a deadline set in
+  `OnEnable`.
+- **`target == null` no longer means the target is gone.** This is the one worth
+  remembering. A pooled slime that dies is parked, not destroyed, so the
+  reference stays perfectly valid — and once the pool hands that body out again,
+  a shot still in the air would home in on a completely different slime and
+  damage it. Projectiles now ask `Slime.IsInPlay`. Every future system that holds
+  a slime across frames has to ask the same thing.
+
+Prewarming is in too, because an empty pool costs exactly what no pool costs for
+the first slime of each type, and a wave's worth of first slimes all arrive
+within a second of each other. `WaveSpawner` warms each slime type with the
+largest single group of it in the whole wave list, before the first wave.
+
+Phase 8 is complete.
+
 ### 2026-07-28 04:57 -05:00 | Phase 8
 
 Phase 8 is almost complete. Three tower types with upgrade ladders and selling,

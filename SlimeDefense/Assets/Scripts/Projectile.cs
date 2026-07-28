@@ -42,6 +42,9 @@ public class Projectile : MonoBehaviour
     Slime target;
     Tower source;
 
+    // When this shot gives up, as a deadline rather than a countdown.
+    float despawnAt;
+
     /// <summary>
     /// Aims this projectile. Called by <see cref="Tower"/> immediately after
     /// instantiating it, before the first Update runs.
@@ -68,25 +71,51 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    void Start()
+    // OnEnable rather than Start, and a deadline rather than Destroy's delay
+    // overload. Part D pools projectiles, so Start runs once for a shot that
+    // goes on to be fired hundreds of times, and a scheduled Destroy would take
+    // the object out of the pool's hands three seconds into its first flight —
+    // most likely while it was already in the air on its fifth.
+    void OnEnable()
     {
-        // Scheduled once rather than counted down in Update. Nothing else needs
-        // the remaining time, and Destroy's delay overload already does exactly
-        // this job.
-        Destroy(gameObject, lifetime);
+        despawnAt = Time.time + lifetime;
+    }
+
+    // Dropped so a parked projectile is not the only thing keeping a dead
+    // slime's C# object alive. Launch sets both again before the next flight.
+    void OnDisable()
+    {
+        target = null;
+        source = null;
     }
 
     void Update()
     {
+        // The safety net that used to be a delayed Destroy. A shot that never
+        // arrives has to clean itself up or it flies forever and, now that it is
+        // pooled, never returns to be reused either.
+        if (Time.time >= despawnAt)
+        {
+            ObjectPool.Despawn(gameObject);
+            return;
+        }
+
         // The target can die mid-flight — commonly, once two towers' ranges
         // overlap and both shoot the same slime. A destroyed GameObject in Unity
         // is not a null reference: it is a live C# object whose == operator
         // reports null while any member access throws MissingReferenceException.
         // This check is what turns that crash into the projectile quietly giving
         // up, and it is the single most important line in the file.
-        if (target == null)
+        // Part D added the second half of that check, and it is not optional. A
+        // pooled slime that dies is deactivated rather than destroyed, so `==
+        // null` reports it as perfectly alive — and once it is handed out again
+        // this shot would home in on a completely different slime that happens
+        // to be wearing the same object, and damage it. A dead target and a
+        // recycled target both mean the same thing here: there is nothing left
+        // to hit.
+        if (target == null || !target.IsInPlay)
         {
-            Destroy(gameObject);
+            ObjectPool.Despawn(gameObject);
             return;
         }
 
@@ -117,7 +146,7 @@ public class Projectile : MonoBehaviour
             source.OnProjectileHit(target, transform.position);
         }
 
-        Destroy(gameObject);
+        ObjectPool.Despawn(gameObject);
     }
 
     // Points the projectile down its flight path. The offset is multiplied on

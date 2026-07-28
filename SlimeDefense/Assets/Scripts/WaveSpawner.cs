@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -96,6 +97,11 @@ public class WaveSpawner : MonoBehaviour
             Debug.LogWarning($"{name} has no waves assigned, so nothing will spawn.", this);
             return;
         }
+
+        // Before the first wave rather than during it. An empty pool costs
+        // exactly what no pool costs for the first slime of each type, and a
+        // wave's worth of first slimes all arrive within a second of each other.
+        PrewarmSlimes();
 
         if (autoStart)
         {
@@ -257,15 +263,51 @@ public class WaveSpawner : MonoBehaviour
     // Creates one slime and gives it the route to follow.
     void Spawn(Slime prefab)
     {
-        // Instantiating at the route's first point avoids a one-frame flash at
-        // the world origin. SetRoute snaps the slime there as well, but not
-        // until the line after this one.
-        Slime slime = Instantiate(prefab, route.GetPoint(0), Quaternion.identity, slimeParent);
+        // Spawning at the route's first point avoids a one-frame flash at the
+        // world origin. SetRoute snaps the slime there as well, but not until
+        // the line after this one.
+        Slime slime = ObjectPool.Spawn(prefab, route.GetPoint(0), Quaternion.identity, slimeParent);
 
-        // This runs immediately, while the new slime's Start() does not run
-        // until later in the frame. So by the time Slime.Start checks for a
-        // route, it already has one, and its FindFirstObjectByType fallback from
-        // Phase 2 never fires for a spawned slime.
+        // Still the line that matters, and Part D made it matter more. It runs
+        // immediately, before the slime's own Start — and a reused slime gets no
+        // Start at all, which is why SetRoute is now also what counts it onto
+        // the board.
         slime.SetRoute(route);
+    }
+
+    // Builds each slime type's copies before the run rather than during it.
+    //
+    // The count is the largest single group of that type in the whole list,
+    // because that is the most of it that can be spawned back to back. It is a
+    // floor, not a ceiling: two groups of the same type overlapping on the route
+    // simply grow the pool at the moment they do, exactly as an unwarmed pool
+    // would.
+    void PrewarmSlimes()
+    {
+        Dictionary<Slime, int> largestGroup = new Dictionary<Slime, int>();
+
+        foreach (WaveDefinition wave in waves)
+        {
+            if (wave == null || !wave.IsValid)
+            {
+                continue;
+            }
+
+            foreach (WaveGroup group in wave.Groups)
+            {
+                if (group == null || !group.IsValid)
+                {
+                    continue;
+                }
+
+                largestGroup.TryGetValue(group.SlimePrefab, out int most);
+                largestGroup[group.SlimePrefab] = Mathf.Max(most, group.Count);
+            }
+        }
+
+        foreach (KeyValuePair<Slime, int> entry in largestGroup)
+        {
+            ObjectPool.Prewarm(entry.Key.gameObject, entry.Value);
+        }
     }
 }
