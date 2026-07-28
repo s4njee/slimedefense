@@ -8,6 +8,55 @@ section.
 
 ## Notes
 
+### 2026-07-27 19:09 -05:00 | Phase 8B
+
+Basic tower upgrades are implemented. A placed tower can be selected, upgraded
+through a ladder of levels, and sold back for part of what it cost.
+
+`TowerLevel` is a row of stats — cost, range, damage, fire rate — and a
+`TowerDefinition` now holds an array of them. Level 0 *is* the tower as built, so
+the array is the whole stat block and there is no separate base to keep in step
+with the upgrades. Explicit rows rather than a multiplier per level: compounding
+makes level five an accident instead of a decision, and there is no way to write
+a rung that trades range for fire rate.
+
+`TowerInspectorPanel.cs` is new and shows the selected tower's name, level, and
+stats with buttons to upgrade or sell. It owns no rules. Every transaction goes
+through `TowerPlacer`, which already checked affordability and spent money when
+building — one place that touches the balance is far easier to keep correct than
+three that each nearly do. `BuildNode` gained `Clear`, collecting on the `Tower`
+reference it has held since Phase 4 for exactly this.
+
+Selling returns 70% of everything spent, build plus upgrades. At 100% selling is
+free undo and the best play is rebuilding the board every wave; below about 50%
+nobody sells and the feature is decoration.
+
+Towers can also change model as they level. `TowerLevel` carries an optional
+model, `Tower` mounts it under a `ModelRoot` child, and a level that leaves it
+empty keeps whatever is already showing — so only the rungs that actually change
+appearance need one. A model baked into the tower prefab is hidden the first time
+a level supplies its own, which is what stops an upgrade leaving two towers
+standing inside each other.
+
+The recurring fault this part is the same one Part A had: a model dragged into a
+prefab keeps whatever local offset it happened to land on, and the tower roots
+are scaled ×4, so a nudge of 1.77 becomes seven world units and the tower renders
+a node away from the one it is standing on. A prefab made by dragging an object
+out of a scene also keeps its scene coordinates as its local position, which puts
+a swapped model a thousand units away rather than slightly off.
+
+Upgrade ladders exist for all three towers. Per-level models are only set on the
+pebble tower; the splash and frost towers keep one model at every level. Frost
+upgrades widen its reach and quicken its fire but cannot deepen the slow itself,
+because `slowFactor` and `slowDuration` live on the `FrostTower` component rather
+than in the level rows — deliberate, since a shared level row carrying every
+type's parameters is mostly meaningless fields.
+
+Parts C and D — enemy variety with wave groups, and object pooling — are still
+ahead.
+
+![Selecting, upgrading, and selling towers](screenshots/phase8_2.avif)
+
 ### 2026-07-27 15:15 -05:00 | Phase 8A
 
 Phase 8 Part A is complete. There are three tower types now, a panel to pick
