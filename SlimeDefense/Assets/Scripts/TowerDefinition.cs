@@ -102,6 +102,11 @@ public class TowerDefinition : ScriptableObject
     [Tooltip("Which slime this tower shoots at when several are in range.")]
     [SerializeField] TargetingMode targeting = TargetingMode.FirstInLine;
 
+    [Tooltip("Whether this tower can shoot flying slimes. On by default, so adding a flying " +
+             "variant changes nothing until a tower type is deliberately made ground-only — " +
+             "which is the interesting case, and one worth turning on rather than discovering.")]
+    [SerializeField] bool canHitFlying = true;
+
     /// <summary>Name shown on the selection panel.</summary>
     public string DisplayName => displayName;
 
@@ -125,6 +130,9 @@ public class TowerDefinition : ScriptableObject
 
     /// <summary>Which slime this tower prefers.</summary>
     public TargetingMode Targeting => targeting;
+
+    /// <summary>Whether this tower may target flying slimes.</summary>
+    public bool CanHitFlying => canHitFlying;
 
     /// <summary>
     /// The stats at <paramref name="level"/>, clamped to the ladder rather than

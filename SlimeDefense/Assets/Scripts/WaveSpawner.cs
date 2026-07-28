@@ -206,7 +206,7 @@ public class WaveSpawner : MonoBehaviour
         }
     }
 
-    // Spawns one wave's slimes, spaced apart in time.
+    // Spawns one wave's groups in order, each group's slimes spaced apart in time.
     IEnumerator RunWave(WaveDefinition wave)
     {
         if (wave.DelayBeforeWave > 0f)
@@ -214,21 +214,42 @@ public class WaveSpawner : MonoBehaviour
             yield return new WaitForSeconds(wave.DelayBeforeWave);
         }
 
-        // `new WaitForSeconds(...)` allocates, so creating one per slime would
-        // produce garbage proportional to the wave size. The interval is
-        // constant within a wave, so one instance is reused for the whole loop.
-        // The same instinct — reuse instead of recreate — is what Phase 8's
-        // object pooling formalizes for the slimes themselves.
-        WaitForSeconds gap = new WaitForSeconds(wave.Spacing);
-
-        for (int i = 0; i < wave.Count; i++)
+        // Part C added this outer loop and nothing else. Phase 3 predicted the
+        // inner loop would survive a wave becoming a list of groups, and it did:
+        // everything below the group check is the code it has always been.
+        for (int g = 0; g < wave.Groups.Length; g++)
         {
-            Spawn(wave.SlimePrefab);
+            WaveGroup group = wave.Groups[g];
 
-            // No trailing gap after the last slime; Time Between Waves covers it.
-            if (i < wave.Count - 1)
+            if (group == null || !group.IsValid)
             {
-                yield return gap;
+                Debug.LogWarning($"{name}: group {g} of {wave.name} has no slime prefab. Skipping it.", this);
+                continue;
+            }
+
+            if (group.DelayBeforeGroup > 0f)
+            {
+                yield return new WaitForSeconds(group.DelayBeforeGroup);
+            }
+
+            // `new WaitForSeconds(...)` allocates, so creating one per slime would
+            // produce garbage proportional to the group size. The interval is
+            // constant within a group, so one instance is reused for the whole
+            // loop. The same instinct — reuse instead of recreate — is what Part
+            // D's object pooling formalizes for the slimes themselves.
+            WaitForSeconds gap = new WaitForSeconds(group.Spacing);
+
+            for (int i = 0; i < group.Count; i++)
+            {
+                Spawn(group.SlimePrefab);
+
+                // No trailing gap after the last slime of a group; the next
+                // group's Delay Before Group covers the seam, and Time Between
+                // Waves covers the end of the wave.
+                if (i < group.Count - 1)
+                {
+                    yield return gap;
+                }
             }
         }
     }

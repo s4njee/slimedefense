@@ -309,6 +309,15 @@ public class Tower : MonoBehaviour
                 continue;
             }
 
+            // A flyer a tower cannot reach is not a target it should be holding
+            // its shot for. Skipping here rather than at fire time means a
+            // ground-only tower goes on shooting whatever else is in range
+            // instead of standing idle with a flyer overhead.
+            if (slime.IsFlying && !definition.CanHitFlying)
+            {
+                continue;
+            }
+
             float score = Score(slime);
 
             if (score > bestScore)

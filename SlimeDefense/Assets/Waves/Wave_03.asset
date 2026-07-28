@@ -12,7 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72b1b5488bab7534ca5e52d8e1ad07db, type: 3}
   m_Name: Wave_03
   m_EditorClassIdentifier: Assembly-CSharp::WaveDefinition
-  slimePrefab: {fileID: 868808180947545482, guid: e18be48024d12c44c8071eb0662177d2, type: 3}
-  count: 12
-  spacing: 0.7
+  groups:
+  - SlimePrefab: {fileID: 868808180947545482, guid: e18be48024d12c44c8071eb0662177d2, type: 3}
+    Count: 12
+    Spacing: 0.7
+    DelayBeforeGroup: 0
+  - SlimePrefab: {fileID: 868808180947545482, guid: 0c547273fd4904f408ad05fb8fd16929, type: 3}
+    Count: 8
+    Spacing: 0.7
+    DelayBeforeGroup: 4
+  - SlimePrefab: {fileID: 868808180947545482, guid: e18be48024d12c44c8071eb0662177d2, type: 3}
+    Count: 12
+    Spacing: 0.7
+    DelayBeforeGroup: 0
   delayBeforeWave: 0

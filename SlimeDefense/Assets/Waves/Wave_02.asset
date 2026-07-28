@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72b1b5488bab7534ca5e52d8e1ad07db, type: 3}
   m_Name: Wave_02
   m_EditorClassIdentifier: Assembly-CSharp::WaveDefinition
-  slimePrefab: {fileID: 868808180947545482, guid: e18be48024d12c44c8071eb0662177d2, type: 3}
-  count: 8
-  spacing: 1
+  groups:
+  - SlimePrefab: {fileID: 868808180947545482, guid: e18be48024d12c44c8071eb0662177d2, type: 3}
+    Count: 8
+    Spacing: 1
+    DelayBeforeGroup: 0
   delayBeforeWave: 0

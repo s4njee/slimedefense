@@ -26,6 +26,22 @@ public class Slime : MonoBehaviour
     [Min(0)]
     [SerializeField] int lifeCost = 1;
 
+    [Tooltip("Incoming damage is multiplied by this before it is subtracted. 0.5 is armour that " +
+             "halves every hit; 1 takes damage as dealt. Phase 5 predicted this exact field when " +
+             "it put damage interpretation on the slime rather than on the projectile — armour " +
+             "arrives without a single line changing in Projectile or Tower.")]
+    [Min(0f)]
+    [SerializeField] float damageMultiplier = 1f;
+
+    [Tooltip("Only towers whose definition allows it can shoot this slime. A flag rather than a " +
+             "subclass: flying changes no behaviour here, it changes who is allowed to target it.")]
+    [SerializeField] bool isFlying;
+
+    [Tooltip("How far above the route a flying slime rides. Applied when the route is assigned; " +
+             "movement keeps whatever height it starts at, so nothing else has to know about it.")]
+    [Min(0f)]
+    [SerializeField] float flightHeight;
+
     [Tooltip("Extra yaw applied after aiming down the path, in degrees. Unity's LookRotation " +
              "points a transform's +Z at the target, but the imported slime model faces -Z, " +
              "so it needs 180 here to walk face-first instead of backwards.")]
@@ -69,6 +85,11 @@ public class Slime : MonoBehaviour
     public float Health => health;
 
     /// <summary>
+    /// True when only towers that can hit flyers may target this slime.
+    /// </summary>
+    public bool IsFlying => isFlying;
+
+    /// <summary>
     /// How far along the route this slime is, as its waypoint index minus a
     /// small fraction of the distance still to walk on the current leg. Towers
     /// compare this to shoot whatever is closest to the goal.
@@ -105,7 +126,11 @@ public class Slime : MonoBehaviour
 
         if (route != null && route.Count > 0)
         {
-            transform.position = route.GetPoint(0);
+            // Height is applied once, here. Update moves in the horizontal plane
+            // only — it copies the slime's own y onto its target every frame — so
+            // a slime that starts above the path stays there for its whole life
+            // without any of the movement code knowing that flying exists.
+            transform.position = route.GetPoint(0) + (Vector3.up * flightHeight);
         }
     }
 
@@ -234,7 +259,11 @@ public class Slime : MonoBehaviour
     /// </summary>
     public void TakeDamage(float amount)
     {
-        health -= amount;
+        // The multiplier is applied here rather than at the source, which is the
+        // whole point of damage being the slime's business to interpret: an
+        // armoured variant is a number on a prefab, and neither Projectile nor
+        // any tower type needed a line changed to support it.
+        health -= amount * damageMultiplier;
 
         if (health <= 0f)
         {
