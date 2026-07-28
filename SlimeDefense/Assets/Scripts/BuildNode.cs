@@ -128,6 +128,29 @@ public class BuildNode : MonoBehaviour
         return tower;
     }
 
+    /// <summary>
+    /// Removes the tower standing here and frees the node, returning true if
+    /// there was one. The caller pays the refund — a node knows what stands on it
+    /// and nothing about money, the same division that kept the cost check in
+    /// <see cref="TowerPlacer"/> rather than here.
+    /// </summary>
+    public bool Clear()
+    {
+        if (tower == null)
+        {
+            return false;
+        }
+
+        // Destroy, not deactivate. Projectiles already in the air hold a
+        // reference to this tower and check it for null on arrival, which is the
+        // guard that turns a sold tower's shots into ones that quietly fizzle.
+        Destroy(tower.gameObject);
+        tower = null;
+
+        RefreshColor();
+        return true;
+    }
+
     void RefreshColor()
     {
         if (padRenderer == null)

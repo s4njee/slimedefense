@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 /// <summary>
@@ -18,6 +19,43 @@ public enum TargetingMode
 }
 
 /// <summary>
+/// One rung of a tower's upgrade ladder: what it costs to reach, and what the
+/// tower is once it gets there.
+///
+/// A whole row of stats rather than a multiplier. `damage *= 1.25f` per level is
+/// fewer numbers to author and worse in every other way: compounding makes level
+/// five an accident rather than a decision, balancing means solving an
+/// exponential instead of reading a table, and there is no way to offer a level
+/// that trades range for fire rate. Explicit rows are more typing and stay
+/// legible at level six.
+/// </summary>
+[Serializable]
+public class TowerLevel
+{
+    [Tooltip("What reaching this level costs. On level 0 this is the build price.")]
+    [Min(0)]
+    public int Cost = 50;
+
+    [Tooltip("Detection radius at this level.")]
+    [Min(0f)]
+    public float Range = 6f;
+
+    [Tooltip("Damage per shot at this level. Zero is legitimate for a support tower.")]
+    [Min(0f)]
+    public float Damage = 3f;
+
+    [Tooltip("Shots per second at this level.")]
+    [Min(0.01f)]
+    public float FireRate = 1.5f;
+
+    [Tooltip("The model shown at this level, as a prefab rather than a raw FBX. Leave empty to " +
+             "keep whatever the previous level was showing, so only the levels that actually " +
+             "change appearance need one. The prefab's own local position is preserved when it " +
+             "is instantiated, which is where each mesh's base offset lives.")]
+    public GameObject Model;
+}
+
+/// <summary>
 /// One tower type's stats, stored as an asset rather than as numbers on a prefab.
 /// Create with **Create &gt; SlimeDefense &gt; Tower** and keep them in
 /// `Assets/Towers`.
@@ -26,11 +64,15 @@ public enum TargetingMode
 /// behavior, so it lives in the Project window where it can be edited, compared
 /// side by side, and duplicated to try a variant without touching a prefab.
 ///
+/// Part B turned the flat stat block into <see cref="TowerLevel"/> rows. Level 0
+/// is the tower as built, so the array *is* the tower's stats — there is no
+/// separate base block to keep in step with the upgrades.
+///
 /// What is *not* here is anything only one tower type cares about. A splash
 /// radius lives on <see cref="SplashTower"/> and a slow factor on
-/// <see cref="FrostTower"/>, because a shared definition carrying every
-/// type's parameters would be mostly meaningless fields for any given asset —
-/// and a field that is meaningless three times out of four is one somebody will
+/// <see cref="FrostTower"/>, because a shared definition carrying every type's
+/// parameters would be mostly meaningless fields for any given asset — and a
+/// field that is meaningless three times out of four is one somebody will
 /// eventually set by mistake.
 /// </summary>
 [CreateAssetMenu(fileName = "Tower_", menuName = "SlimeDefense/Tower", order = 1)]
@@ -43,24 +85,15 @@ public class TowerDefinition : ScriptableObject
              "tower behaves; this asset decides the numbers it behaves with.")]
     [SerializeField] Tower prefab;
 
-    [Tooltip("What this tower costs to build. TowerPlacer reads it from here, so a new type " +
-             "arrives with its price attached instead of needing an entry in a table.")]
-    [Min(0)]
-    [SerializeField] int cost = 50;
+    [Tooltip("The upgrade ladder, cheapest first. Element 0 is the tower as built and must " +
+             "exist; every element after it is an upgrade the player can buy.")]
+    [SerializeField] TowerLevel[] levels = new TowerLevel[1];
 
-    [Tooltip("Detection radius. Measured to the slime's collider, so an oversized slime " +
-             "collider quietly extends this.")]
-    [Min(0f)]
-    [SerializeField] float range = 6f;
-
-    [Tooltip("Damage dealt per shot that lands. Zero is legitimate — a support tower that also " +
-             "deals damage is not a choice, it is an upgrade.")]
-    [Min(0f)]
-    [SerializeField] float damage = 3f;
-
-    [Tooltip("Shots per second.")]
-    [Min(0.01f)]
-    [SerializeField] float fireRate = 1.5f;
+    [Tooltip("Fraction of everything spent on a tower that selling gives back. At 1 selling is " +
+             "free undo and the optimal play is rebuilding the board every wave; below about " +
+             "0.5 nobody ever sells and the feature is decoration.")]
+    [Range(0f, 1f)]
+    [SerializeField] float sellRefund = 0.7f;
 
     [Tooltip("The projectile fired at targets. One prefab can serve several tower types; what " +
              "happens on arrival is decided by the tower that fired it.")]
@@ -75,17 +108,17 @@ public class TowerDefinition : ScriptableObject
     /// <summary>The prefab this definition builds.</summary>
     public Tower Prefab => prefab;
 
-    /// <summary>What this tower costs to build.</summary>
-    public int Cost => cost;
+    /// <summary>What this tower costs to build — the price of its first level.</summary>
+    public int Cost => levels != null && levels.Length > 0 ? levels[0].Cost : 0;
 
-    /// <summary>How far this tower reaches.</summary>
-    public float Range => range;
+    /// <summary>How many levels this tower has, including the one it is built at.</summary>
+    public int LevelCount => levels != null ? levels.Length : 0;
 
-    /// <summary>Damage dealt per shot that lands.</summary>
-    public float Damage => damage;
+    /// <summary>The highest level index this tower can reach.</summary>
+    public int MaxLevel => Mathf.Max(0, LevelCount - 1);
 
-    /// <summary>Shots per second.</summary>
-    public float FireRate => fireRate;
+    /// <summary>Fraction of total spend returned when selling.</summary>
+    public float SellRefund => sellRefund;
 
     /// <summary>The projectile this tower fires.</summary>
     public Projectile ProjectilePrefab => projectilePrefab;
@@ -93,15 +126,41 @@ public class TowerDefinition : ScriptableObject
     /// <summary>Which slime this tower prefers.</summary>
     public TargetingMode Targeting => targeting;
 
+    /// <summary>
+    /// The stats at <paramref name="level"/>, clamped to the ladder rather than
+    /// throwing. A tower asking for a level that does not exist is a bug worth
+    /// seeing on screen as stats that stopped improving, not one worth taking the
+    /// frame down for.
+    /// </summary>
+    public TowerLevel GetLevel(int level)
+    {
+        if (levels == null || levels.Length == 0)
+        {
+            return null;
+        }
+
+        return levels[Mathf.Clamp(level, 0, levels.Length - 1)];
+    }
+
+    /// <summary>
+    /// What upgrading from <paramref name="currentLevel"/> costs, or 0 when the
+    /// tower is already at the top of its ladder.
+    /// </summary>
+    public int UpgradeCost(int currentLevel)
+    {
+        int next = currentLevel + 1;
+        return next < LevelCount ? levels[next].Cost : 0;
+    }
+
     // Read-only properties over private serialized fields, exactly as on
     // WaveDefinition and for the same reason: an asset is shared by every tower
-    // built from it, so a script that could write to `damage` would be editing
-    // the saved asset — and in the editor, saving that change into the project.
+    // built from it, so a script that could write to a level would be editing the
+    // saved asset — and in the editor, saving that change into the project.
 
     /// <summary>
     /// True when this definition can actually build something. Checked once by
     /// the placer rather than discovered as a NullReferenceException at the
     /// moment a player clicks.
     /// </summary>
-    public bool IsValid => prefab != null;
+    public bool IsValid => prefab != null && LevelCount > 0;
 }

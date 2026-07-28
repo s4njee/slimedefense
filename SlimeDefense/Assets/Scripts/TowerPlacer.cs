@@ -38,6 +38,9 @@ public class TowerPlacer : MonoBehaviour
     // can be cleared from the node the pointer just left.
     BuildNode hovered;
 
+    // Whether the pointer was over the HUD when the hover was last updated.
+    bool pointerOverUi;
+
     /// <summary>
     /// The tower type the next click will build. Set by
     /// <see cref="TowerPicker"/>; never null once Start has run, so a player who
@@ -47,6 +50,21 @@ public class TowerPlacer : MonoBehaviour
 
     /// <summary>Raised when the selection changes, so the picker can show which button is active.</summary>
     public event System.Action<TowerDefinition> SelectionChanged;
+
+    /// <summary>
+    /// The node whose tower is currently selected, or null. Clicking an occupied
+    /// node selects it; clicking anywhere else in the world clears it.
+    /// </summary>
+    public BuildNode SelectedNode { get; private set; }
+
+    /// <summary>The tower currently selected for upgrade or sale, or null.</summary>
+    public Tower SelectedTower => SelectedNode != null ? SelectedNode.Tower : null;
+
+    /// <summary>
+    /// Raised with the selected node, or null when the selection is cleared, so
+    /// the inspector panel can show and hide itself without polling.
+    /// </summary>
+    public event System.Action<BuildNode> TowerSelectionChanged;
 
     /// <summary>
     /// Chooses the tower type built by subsequent clicks. Affordability is
@@ -69,6 +87,96 @@ public class TowerPlacer : MonoBehaviour
 
         Selected = definition;
         SelectionChanged?.Invoke(Selected);
+    }
+
+    /// <summary>
+    /// Clears the placed-tower selection, hiding the inspector panel.
+    /// </summary>
+    public void ClearTowerSelection()
+    {
+        if (SelectedNode == null)
+        {
+            return;
+        }
+
+        SelectedNode = null;
+        TowerSelectionChanged?.Invoke(null);
+    }
+
+    /// <summary>
+    /// Buys the next level for the selected tower, or returns false if there is
+    /// nothing selected, nothing left to buy, or not enough money.
+    ///
+    /// The transaction lives here rather than on <see cref="Tower"/> or on the
+    /// panel: this script already checks affordability and spends when building,
+    /// and one place that touches the balance is much easier to keep correct than
+    /// three that each nearly do.
+    /// </summary>
+    public bool TryUpgradeSelected()
+    {
+        Tower tower = SelectedTower;
+
+        if (tower == null || !tower.CanUpgrade || GameManager.Instance == null)
+        {
+            return false;
+        }
+
+        int price = tower.UpgradeCost;
+
+        // Check, apply, then charge — the same order as building, and for the
+        // same reason. Upgrade() refuses at max level, and charging before that
+        // refusal would take money for a level the player never got.
+        if (!GameManager.Instance.CanAfford(price))
+        {
+            return false;
+        }
+
+        if (!tower.Upgrade())
+        {
+            return false;
+        }
+
+        GameManager.Instance.TrySpend(price);
+        TowerSelectionChanged?.Invoke(SelectedNode);
+        return true;
+    }
+
+    /// <summary>
+    /// Sells the selected tower, refunds a fraction of what it cost, and frees
+    /// its node.
+    /// </summary>
+    public bool SellSelected()
+    {
+        Tower tower = SelectedTower;
+
+        if (tower == null)
+        {
+            return false;
+        }
+
+        // Read before the tower is destroyed. Afterwards the reference is a
+        // fake-null whose every member access throws, and SellValue is a member.
+        int refund = tower.SellValue;
+        BuildNode node = SelectedNode;
+
+        if (!node.Clear())
+        {
+            return false;
+        }
+
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.AddMoney(refund);
+        }
+
+        ClearTowerSelection();
+        return true;
+    }
+
+    void SelectTower(BuildNode node)
+    {
+        SelectedNode = node;
+        TowerSelectionChanged?.Invoke(SelectedNode);
     }
 
     void Start()
@@ -145,23 +253,16 @@ public class TowerPlacer : MonoBehaviour
         // UI module's view of the pointer, which on touch can lag the raw pointer
         // by a frame, so the mouse case can look perfect while a tap near a
         // button's edge occasionally still builds.
-        bool overUi = EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
+        // Recorded rather than used and discarded, because HandlePress needs the
+        // same answer: a press on the HUD must not clear the tower selection, or
+        // pressing Upgrade would deselect the very tower it is upgrading before
+        // the button's own click is delivered.
+        pointerOverUi = EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
 
         // Null when no pointing device is present — a gamepad-only session, or
         // the first frames before a device is detected. Reading position off it
         // regardless is a NullReferenceException per frame.
-
-
-        // A press that landed on the HUD is not a press on the world behind it.
-// Checked during hover rather than at press time so the node under the button
-// does not highlight either — a node that lights up under the cursor and then
-// refuses to build reads as a bug.
-        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
-        {
-            found = null;
-        }
-
-        if (!overUi && Pointer.current != null)
+        if (!pointerOverUi && Pointer.current != null)
         {
             Vector2 screenPoint = Pointer.current.position.ReadValue();
             Ray ray = placementCamera.ScreenPointToRay(screenPoint);
@@ -194,10 +295,11 @@ public class TowerPlacer : MonoBehaviour
         }
     }
 
-    // Builds on the hovered node when the pointer goes down.
+    // Builds on the hovered node when the pointer goes down, or selects the tower
+    // already standing there.
     void HandlePress()
     {
-        if (Pointer.current == null || hovered == null)
+        if (Pointer.current == null)
         {
             return;
         }
@@ -210,13 +312,34 @@ public class TowerPlacer : MonoBehaviour
             return;
         }
 
-        if (hovered.IsOccupied)
+        // The HUD owns this press entirely. Returning rather than falling through
+        // is what stops a click on the Upgrade button from also clearing the
+        // selection it is acting on.
+        if (pointerOverUi)
         {
-            // Not an error and not worth a log line. Clicking an occupied node
-            // is something players do constantly, and the node's color has
-            // already said no.
             return;
         }
+
+        // A press on empty ground means "never mind", which is the only way to
+        // dismiss the inspector panel without a close button.
+        if (hovered == null)
+        {
+            ClearTowerSelection();
+            return;
+        }
+
+        if (hovered.IsOccupied)
+        {
+            // Phase 4 ignored this click and said so in a comment. Part B gives it
+            // a job: the node already holds a reference to the tower standing on
+            // it, so selecting one is a lookup rather than a search.
+            SelectTower(hovered);
+            return;
+        }
+
+        // Building somewhere else means the player has moved on from whatever was
+        // selected.
+        ClearTowerSelection();
 
         // Building on a board that has already been lost only ever reads as a
         // bug. Placement is the one system that has to stand down on its own —

@@ -14,9 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TowerDefinition
   displayName: Splash Tower
   prefab: {fileID: 4185359725320676189, guid: dfc1ef17b8764670895105b454baf343, type: 3}
-  cost: 90
-  range: 7
-  damage: 2
-  fireRate: 0.7
+  levels:
+  - Cost: 90
+    Range: 7
+    Damage: 2
+    FireRate: 0.7
+  - Cost: 110
+    Range: 7.5
+    Damage: 3.5
+    FireRate: 0.8
+  - Cost: 180
+    Range: 8.5
+    Damage: 5
+    FireRate: 0.9
+  sellRefund: 0.7
   projectilePrefab: {fileID: 240806475811143252, guid: 7b2778915bb7153498f8499312ba5c87, type: 3}
   targeting: 0

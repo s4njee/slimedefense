@@ -32,6 +32,13 @@ public class Projectile : MonoBehaviour
     [Min(0.01f)]
     [SerializeField] float arriveDistance = 0.2f;
 
+    [Tooltip("Extra rotation applied after aiming down the flight path, in degrees. Unity's " +
+             "LookRotation points a transform's +Z at the target, so a model whose length runs " +
+             "along a different axis needs correcting here — an arrow built along +X wants " +
+             "(0, -90, 0), and one built along -X wants (0, 90, 0). A sphere wants nothing, " +
+             "which is why this is zero by default.")]
+    [SerializeField] Vector3 modelRotationOffset;
+
     Slime target;
     Tower source;
 
@@ -50,6 +57,15 @@ public class Projectile : MonoBehaviour
     {
         target = newTarget;
         source = newSource;
+
+        // Aimed here as well as in Update, because the tower instantiates with
+        // Quaternion.identity and Update does not run until the next frame. One
+        // frame of an arrow pointing down the world's +Z axis before it snaps to
+        // its flight path is exactly the kind of flicker that reads as a glitch.
+        if (target != null)
+        {
+            FaceTravelDirection(target.AimPosition);
+        }
     }
 
     void Start()
@@ -79,6 +95,12 @@ public class Projectile : MonoBehaviour
         // about feel, not something to inherit by accident here.
         Vector3 destination = target.AimPosition;
 
+        // Before moving, so the heading is the direction about to be travelled
+        // rather than the one just finished. Re-aimed every frame because the
+        // shot homes: a target that sidesteps should be followed by the arrow's
+        // point, not just by its position.
+        FaceTravelDirection(destination);
+
         transform.position = Vector3.MoveTowards(transform.position, destination, speed * Time.deltaTime);
 
         if (Vector3.Distance(transform.position, destination) > arriveDistance)
@@ -96,5 +118,23 @@ public class Projectile : MonoBehaviour
         }
 
         Destroy(gameObject);
+    }
+
+    // Points the projectile down its flight path. The offset is multiplied on
+    // the right so it spins the model about its own axes after it has been
+    // aimed, rather than tilting the aim itself — the same shape as the fix
+    // Slime uses for a model that faces the wrong way.
+    void FaceTravelDirection(Vector3 destination)
+    {
+        Vector3 heading = destination - transform.position;
+
+        // A zero-length heading has no direction to look down, and
+        // LookRotation logs a warning for every frame it is handed one.
+        if (heading.sqrMagnitude < 0.000001f)
+        {
+            return;
+        }
+
+        transform.rotation = Quaternion.LookRotation(heading) * Quaternion.Euler(modelRotationOffset);
     }
 }

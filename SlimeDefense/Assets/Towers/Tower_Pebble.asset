@@ -14,9 +14,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TowerDefinition
   displayName: Pebble Tower
   prefab: {fileID: 4185359725320676189, guid: 5e706f5458c0bd64b82ebb67b5056f61, type: 3}
-  cost: 50
-  range: 6
-  damage: 3
-  fireRate: 1.5
-  projectilePrefab: {fileID: 240806475811143252, guid: 7b2778915bb7153498f8499312ba5c87, type: 3}
+  levels:
+  - Cost: 50
+    Range: 6
+    Damage: 3
+    FireRate: 1.5
+    Model: {fileID: 0}
+  - Cost: 60
+    Range: 10
+    Damage: 6
+    FireRate: 3
+    Model: {fileID: 878766655334963891, guid: 264a3adcc0b2f294d87bdafea27e68ee, type: 3}
+  - Cost: 110
+    Range: 8
+    Damage: 8
+    FireRate: 1.8
+    Model: {fileID: 0}
+  sellRefund: 0.7
+  projectilePrefab: {fileID: 3757135255343294954, guid: 8144f51242aa5cc43bc0bce6a913710d, type: 3}
   targeting: 0

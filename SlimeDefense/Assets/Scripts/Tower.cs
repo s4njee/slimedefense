@@ -31,8 +31,24 @@ public class Tower : MonoBehaviour
              "nodes, and other towers for this script to sort out afterwards.")]
     [SerializeField] LayerMask slimeMask;
 
+    [Tooltip("Empty child the level models are parented to, at the tower's own origin. Leaving " +
+             "this empty means the tower keeps whatever model is built into its prefab and never " +
+             "changes it.")]
+    [SerializeField] Transform modelRoot;
+
+    [Tooltip("Name of a transform inside a level model to fire from, if it has one. A taller " +
+             "upgraded model wants a higher muzzle, and putting that marker in the model keeps " +
+             "the two from drifting apart. Falls back to the tower's own Fire Point.")]
+    [SerializeField] string modelFirePointName = "Muzzle";
+
     // Seconds until this tower may fire again.
     float cooldown;
+
+    // The level model currently on show, and the fire point the prefab was
+    // authored with. The authored one is kept so a level whose model has no
+    // muzzle marker falls back to it rather than to the previous model's.
+    GameObject modelInstance;
+    Transform authoredFirePoint;
 
     // Allocated once and reused by every query, because the non-allocating
     // overload of OverlapSphere fills a buffer instead of returning a fresh
@@ -48,14 +64,42 @@ public class Tower : MonoBehaviour
     /// <summary>The stats this tower is running on.</summary>
     public TowerDefinition Definition => definition;
 
+    /// <summary>
+    /// Which rung of the definition's ladder this tower is on. Zero is as built.
+    /// </summary>
+    public int Level { get; private set; }
+
+    /// <summary>Everything the player has spent on this tower — the build plus every upgrade.</summary>
+    public int TotalSpent { get; private set; }
+
+    /// <summary>True when there is another rung to buy.</summary>
+    public bool CanUpgrade => definition != null && Level < definition.MaxLevel;
+
+    /// <summary>What the next upgrade costs, or 0 at maximum level.</summary>
+    public int UpgradeCost => definition != null ? definition.UpgradeCost(Level) : 0;
+
+    /// <summary>
+    /// What selling returns. Rounded down, so selling and rebuilding is never
+    /// accidentally profitable through a rounding seam.
+    /// </summary>
+    public int SellValue => definition != null
+        ? Mathf.FloorToInt(TotalSpent * definition.SellRefund)
+        : 0;
+
     /// <summary>What this tower cost to build.</summary>
     public int Cost => definition != null ? definition.Cost : 0;
 
-    /// <summary>How far this tower reaches.</summary>
-    public float Range => definition != null ? definition.Range : 0f;
+    /// <summary>How far this tower reaches, at its current level.</summary>
+    public float Range => CurrentLevel != null ? CurrentLevel.Range : 0f;
 
-    /// <summary>Damage this tower deals per shot that lands.</summary>
-    protected float Damage => definition != null ? definition.Damage : 0f;
+    /// <summary>Damage this tower deals per shot that lands, at its current level.</summary>
+    protected float Damage => CurrentLevel != null ? CurrentLevel.Damage : 0f;
+
+    /// <summary>Shots per second at the current level.</summary>
+    public float FireRate => CurrentLevel != null ? CurrentLevel.FireRate : 1f;
+
+    /// <summary>The stat row this tower is currently running on.</summary>
+    public TowerLevel CurrentLevel => definition != null ? definition.GetLevel(Level) : null;
 
     /// <summary>Layers this tower's detection considers. Subclasses reuse it for their own queries.</summary>
     protected LayerMask SlimeMask => slimeMask;
@@ -68,9 +112,116 @@ public class Tower : MonoBehaviour
     /// place a tower type's numbers live. A prefab that also carried its own copy
     /// would be two sources of truth that agree right up until someone edits one.
     /// </summary>
+    void Awake()
+    {
+        // Captured before any model swap can overwrite it.
+        authoredFirePoint = firePoint;
+    }
+
     public void Initialize(TowerDefinition newDefinition)
     {
         definition = newDefinition;
+        Level = 0;
+        TotalSpent = definition != null ? definition.Cost : 0;
+
+        RefreshModel();
+    }
+
+    /// <summary>
+    /// Advances this tower one rung and records what it cost. Returns false when
+    /// it is already at the top.
+    ///
+    /// Deliberately does no money handling. A tower has no business knowing
+    /// whether the player could afford it — the caller checks and spends, exactly
+    /// as <see cref="TowerPlacer"/> does when building one. That keeps every
+    /// transaction in the same place instead of split between a controller and a
+    /// component that mostly wants to shoot things.
+    /// </summary>
+    public bool Upgrade()
+    {
+        if (!CanUpgrade)
+        {
+            return false;
+        }
+
+        TotalSpent += UpgradeCost;
+        Level++;
+
+        RefreshModel();
+
+        // The cooldown is left running rather than reset. A faster fire rate
+        // should not also hand out a free shot the instant it is bought, and
+        // Update divides by the new rate on the next tick regardless.
+        return true;
+    }
+
+    /// <summary>
+    /// Shows the model belonging to the current level, if it has one of its own.
+    ///
+    /// A level with no model keeps whatever is already on show, so only the
+    /// levels that actually change appearance need a prefab — a three-rung tower
+    /// that only changes at the top is two empty fields, not two duplicates.
+    /// </summary>
+    void RefreshModel()
+    {
+        GameObject prefab = CurrentLevel != null ? CurrentLevel.Model : null;
+
+        if (modelRoot == null || prefab == null)
+        {
+            return;
+        }
+
+        if (modelInstance != null)
+        {
+            Destroy(modelInstance);
+        }
+
+        // worldPositionStays: false is the argument that matters. It keeps the
+        // prefab's own local position, rotation, and scale relative to the new
+        // parent — and that local position is where each mesh's base offset
+        // lives, since every Meshy model pivots about its own centre rather than
+        // its feet. The two-argument overload defaults to true, recomputes the
+        // offset from world space, and buries or floats the model instead.
+        modelInstance = Instantiate(prefab, modelRoot, false);
+
+        // Hide anything authored into the prefab under the model root. A tower
+        // that ships with a model baked in should stop showing it the moment a
+        // level supplies one of its own — otherwise the first upgrade leaves two
+        // towers standing inside each other.
+        //
+        // Hidden rather than destroyed, because it belongs to the prefab rather
+        // than to this script, and destroying another system's objects is a
+        // habit that eventually deletes something that mattered.
+        foreach (Transform child in modelRoot)
+        {
+            if (child.gameObject != modelInstance)
+            {
+                child.gameObject.SetActive(false);
+            }
+        }
+
+        AdoptFirePoint();
+    }
+
+    // Lets a model carry its own muzzle, so a taller upgrade fires from its own
+    // top rather than from wherever the level-one model's top used to be.
+    void AdoptFirePoint()
+    {
+        firePoint = authoredFirePoint;
+
+        if (modelInstance == null || string.IsNullOrEmpty(modelFirePointName))
+        {
+            return;
+        }
+
+        foreach (Transform child in modelInstance.GetComponentsInChildren<Transform>(true))
+        {
+            if (child.name == modelFirePointName)
+            {
+                firePoint = child;
+                return;
+            }
+        }
     }
 
     void Start()
@@ -89,6 +240,14 @@ public class Tower : MonoBehaviour
                            "can never shoot anything.", this);
             enabled = false;
             return;
+        }
+
+        // Covers a tower dropped into the scene by hand, which never gets an
+        // Initialize call. Guarded so a tower built through BuildNode does not
+        // instantiate its model twice.
+        if (modelInstance == null)
+        {
+            RefreshModel();
         }
 
         // A mask of 0 matches no layers, so every query comes back empty and the
@@ -123,7 +282,7 @@ public class Tower : MonoBehaviour
         }
 
         Fire(target);
-        cooldown = 1f / definition.FireRate;
+        cooldown = 1f / FireRate;
     }
 
     /// <summary>
