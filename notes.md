@@ -8,6 +8,18 @@ section.
 
 ## Notes
 
+### 2026-07-28 12:55 -05:00 | Phase 9
+
+Phase 9 has started, and the polish is going in art first: brand new Meshy
+models are replacing what the earlier phases were built on. Every phase up to
+now kept the game playable on placeholders, which is what made swapping them a
+change of assets rather than a change of code.
+
+The rest of what this phase covers is in the roadmap — audio, hit flashes and
+death effects, floating damage and money numbers — and none of it is in yet.
+
+![Phase 9 polish: the new Meshy models in the scene](screenshots/phase9_1.avif)
+
 ### 2026-07-28 08:35 -05:00 | Phase 8D
 
 Object pooling is in, which was the last untouched part of Phase 8. Slimes and
