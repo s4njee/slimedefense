@@ -263,6 +263,8 @@ public class Tower : MonoBehaviour
         Vector3 local = modelInstance.transform.localPosition;
         modelInstance.transform.localPosition = new Vector3(0f, local.y, 0f);
 
+        CenterModelHorizontally();
+
         // Hide the art the prefab was authored with. A tower that ships with a
         // model baked in should stop showing it the moment a level supplies one
         // of its own — otherwise the first upgrade leaves two towers standing
@@ -281,6 +283,41 @@ public class Tower : MonoBehaviour
 
         AdoptFirePoint();
         RefreshSelectionCollider();
+    }
+
+    // Slides the model sideways until what it draws sits over the tower's own
+    // axis, leaving its height alone.
+    //
+    // Zeroing the instance's local X and Z above is not enough, because the mesh
+    // is rarely the prefab's root object — it is a nested prefab of the imported
+    // FBX, one level down, and it carries scene coordinates of its own from
+    // whenever it was dragged out of a scene. Frost2 holds its mesh 2.8 units to
+    // one side and KeepTower3 holds its 3.3, which the tower's scale multiplies
+    // into a model standing a dozen units off its pad.
+    //
+    // Measured from the rendered bounds rather than fixed up in each model
+    // prefab, because that also moves the model's own Muzzle marker with it —
+    // shifting the mesh alone inside a prefab would leave the muzzle hanging in
+    // the air where the barrel used to be.
+    void CenterModelHorizontally()
+    {
+        Renderer[] renderers = modelInstance.GetComponentsInChildren<Renderer>(false);
+
+        if (renderers.Length == 0)
+        {
+            return;
+        }
+
+        Bounds bounds = renderers[0].bounds;
+
+        for (int i = 1; i < renderers.Length; i++)
+        {
+            bounds.Encapsulate(renderers[i].bounds);
+        }
+
+        // World space, so the tower's rotation and scale need no arithmetic here.
+        Vector3 drift = bounds.center - transform.position;
+        modelInstance.transform.position -= new Vector3(drift.x, 0f, drift.z);
     }
 
     void RefreshSelectionCollider()
